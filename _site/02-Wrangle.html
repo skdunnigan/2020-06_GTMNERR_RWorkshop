@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Session 2 - Wrangle Data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/yeti.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 45px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h2 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h3 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h4 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h5 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.section h6 {
+  padding-top: 50px;
+  margin-top: -50px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Integrate R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Sessions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="introduction.html">Session 0 - Introduction</a>
+    </li>
+    <li>
+      <a href="01-Visualize.html">Session 1 - Visualize Data</a>
+    </li>
+    <li>
+      <a href="02-Wrangle.html">Session 2 - Wrangle Data</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="rstudio.cloud">RStudio Cloud</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="code-of-conduct.html">Code of Conduct</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Session 2 - Wrangle Data</h1>
+
+</div>
+
+
+<div class="progress">
+<div class="progress-bar progress-bar-striped" role="progressbar" style="width: 45%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+
+</div>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(tidyr)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(lubridate)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(here)</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
+<p>Sometimes, the data we’re working with is not quite ready for whatever it is we want to do. We may need to summarize the data based on some group, calculate additional parameters, subset the data, or even completely reshape it. The packages <code>dplyr</code> and <code>tidyr</code> can help with these tasks!</p>
+<div id="dplyr-verbs" class="section level1">
+<h1>dplyr verbs</h1>
+<p>There are three key functions in <code>dplyr</code> that are really the workhorses of the tidyverse:</p>
+<ul>
+<li><code>filter()</code> to subset based on rows</li>
+<li><code>select()</code> to subset based on columns<br />
+</li>
+<li><code>mutate()</code> to add or modify values in columns</li>
+</ul>
+<p>We will use data downloaded from ebird to explore these.</p>
+<p>First, let’s read in the ebird data and explore it:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">ebird &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;eBird_workshop.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="kw">glimpse</span>(ebird)   <span class="co"># 183,742 rows</span></a></code></pre></div>
+<p>We may not talk about this in the workshop, but there are (presumably accidentally) duplicate rows in this data frame. We can see them with:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">janitor<span class="op">::</span><span class="kw">get_dupes</span>(ebird)   <span class="co"># 22 duplicates = 11 that need to go</span></a></code></pre></div>
+<pre><code>## No variable names specified - using all columns.</code></pre>
+<p>They are exact copies of other rows, not any data entry problems (although <code>janitor::get_dupes()</code> is very helpful in finding errors like mis-typing a site name), so we’ll just get rid of them by using <code>dplyr::distinct()</code> to keep only unique rows.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">ebird &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">distinct</span>(ebird)</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">glimpse</span>(ebird)   <span class="co"># 183,731 rows</span></a></code></pre></div>
+<div id="choose-rows-filter" class="section level2">
+<h2>Choose <em>rows</em>: <code>filter()</code></h2>
+<p>This has a lot of rows. We might only be interested in observations about a single bird species, or from a single state, which means we want to choose rows. To do this, we use the verb <code>filter()</code>. The data argument comes first, then the condition.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">filter</span>(ebird, state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>)</a></code></pre></div>
+<p>Alternately, we can use the pipe, which feeds the data frame resulting from everything before it into whatever is next (read it as “and then….”)</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>)</a></code></pre></div>
+<p>Let’s go ahead and assign it to a data frame so we can explore it a little more.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">ebird_AK &lt;-<span class="st"> </span>ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">glimpse</span>(ebird_AK)</a></code></pre></div>
+<p>Notice a couple things here:</p>
+<ul>
+<li>We use <code>==</code> to specify an exact condition. If we were working with numbers, we could use:
+<ul>
+<li><code>&lt;</code><br />
+</li>
+<li><code>&lt;=</code><br />
+</li>
+<li><code>==</code><br />
+</li>
+<li><code>!=</code> (<strong>not</strong> equal to)<br />
+</li>
+<li><code>&gt;=</code><br />
+</li>
+<li><code>&gt;</code><br />
+</li>
+</ul></li>
+<li>The condition specified inside <code>filter()</code> MUST return either true or false, for each row.</li>
+</ul>
+<div id="multiple-conditions" class="section level3">
+<h3>multiple conditions</h3>
+<p>We can filter based on more than one criterion, e.g. if we want all birds from Alaska, but only in the year 2008:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">ebird_AK_<span class="dv">2008</span> &lt;-<span class="st"> </span>ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>,</a>
+<a class="sourceLine" id="cb9-3" title="3">           year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>)</a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="kw">head</span>(ebird_AK_<span class="dv">2008</span>)</a></code></pre></div>
+<p><strong>Note</strong>: It doesn’t matter if you select <code>state</code> or <code>year</code> first - you can do either.</p>
+<p>Because we’re just experimenting with filtering here, and don’t really need to save these as data frames in our environment, I’m going to stop assigning to objects and start doing this:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>,</a>
+<a class="sourceLine" id="cb10-3" title="3">           year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>) </a></code></pre></div>
+<p>Note, that’s not something you want to do if you actually need to work with the data frame later!</p>
+<hr />
+</div>
+<div id="your-turn-1" class="section level3">
+<h3>Your Turn 1</h3>
+<p>How could we pull out birds in Alaska (AK), before 2010? (Hint: you can use the same symbols on year that you would use with any other numbers)</p>
+<hr />
+</div>
+<div id="multiple-conditions-cont." class="section level3">
+<h3>multiple conditions, cont.</h3>
+<p>What if we want to look at birds from more than one state? There are a few ways to do this.</p>
+<p>Perhaps the easiest is to make a vector of the states you’re interested in:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">my_states &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AK&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)</a></code></pre></div>
+<p>And then use <code>%in%</code> in the filter statement, to say, e.g. “any of the states <em>in</em> this vector”:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">ebird_mystates &lt;-<span class="st"> </span>ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="st">    </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>,</a>
+<a class="sourceLine" id="cb12-3" title="3">           state <span class="op">%in%</span><span class="st"> </span>my_states) </a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="kw">head</span>(ebird_mystates)</a>
+<a class="sourceLine" id="cb12-5" title="5"></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co"># make sure the states we named, and only the states we named, are represented:</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="kw">unique</span>(ebird_mystates<span class="op">$</span>state)</a></code></pre></div>
+<p>You could also skip the step of naming the vector separately:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="st">    </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>,</a>
+<a class="sourceLine" id="cb13-3" title="3">           state <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AK&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+</div>
+<div id="your-turn-2" class="section level3">
+<h3>Your Turn 2</h3>
+<p>How would you filter the data to contain only the species “American Coot” from MS and FL (your instructors’ states), in all years <em>except</em> 2010? Assign this object to a data frame and verify (using <code>unique()</code>) that you did it right.</p>
+<hr />
+<hr />
+</div>
+</div>
+<div id="choose-columns-select" class="section level2">
+<h2>Choose <em>columns</em>: <code>select()</code></h2>
+<p>When you’re working with a lot of data, you may not want or need to keep all the columns you started with. In this case, <code>select()</code> is what you need.</p>
+<p>The ebird data frame doesn’t have too many columns, but that makes it easy to see exactly what we’re doing! Let’s pretend we only want to keep species, state, and year. We can do this two ways:</p>
+<p>First, by selecting the columns we <strong>do</strong> want to keep:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="st">    </span><span class="kw">select</span>(species, state, year) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<p>Or second, by using a <code>-</code> in front of the columns we <strong>don’t</strong> want to keep:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>samplesize, <span class="op">-</span>presence) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<p>Either of these can be really handy depending on what your original data frame looks like and what you’re trying to do!</p>
+<p>Order <strong>does</strong> matter in <code>select()</code>; remember it didn’t matter in <code>filter()</code>. In <code>select()</code>, selections are made in the order specified - so if you want to rearrange the columns of your data, you can do it with this command!</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="st">    </span><span class="kw">select</span>(year, state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<p>You can also move just one or a few columns to the beginning by specifying it/them, and then <code>everything()</code> - it keeps all other columns, in their original order:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="st">    </span><span class="kw">select</span>(year, <span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div id="aside-helper-functions" class="section level3">
+<h3>Aside: helper functions</h3>
+<p>Sometimes you have a lot of columns that start with the same prefix, or that end with the same appended matter; maybe you want to keep all of them (or get rid of all of them). In these situations, you can use the helper functions <code>starts_with()</code> and <code>ends_with()</code>. See the <code>dplyr</code> cheatsheet for other possible helper functions.</p>
+<p>In our little example, let’s keep columns whose names start with ‘s’:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">&quot;s&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<p>Or columns that end with ‘e’:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="kw">ends_with</span>(<span class="st">&quot;e&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<p>Check out the data wrangling cheat sheet for more helper functions.</p>
+</div>
+<div id="end-aside" class="section level3">
+<h3>end aside</h3>
+</div>
+<div id="your-turn-3" class="section level3">
+<h3>Your Turn 3</h3>
+<p>From the ebird data, subset to only include the species American Coot, from the states FL, AL, and MS. Keep only the state, year, and presence columns. What is the proper order of operations in this case?</p>
+<hr />
+<hr />
+</div>
+</div>
+<div id="setup-for-the-next-bit-of-the-workshop" class="section level2">
+<h2>Setup for the next bit of the workshop</h2>
+<p>We’re going to switch datasets here, to one that’s a little more complicated: water quality data! Shannon has downloaded monitoring data from several National Estuarine Research Reserves for the year 2016, and has already winnowed it down a bit to daily averages of several parameters that we measure. We will use your newfound <code>select()</code> and <code>filter()</code> skills to make it an even smaller data frame, and then we’ll learn how to calculate new columns and do group-wise summaries.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">wq &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;daily_wq.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="kw">glimpse</span>(wq)</a></code></pre></div>
+<div id="your-turn-4" class="section level3">
+<h3>Your Turn 4</h3>
+<p>Because this is so important, I will provide working code in a chunk below. But please attempt it yourself first!!!</p>
+<p>We have read in the daily water quality data for a few stations. Create a new data frame called <code>wq_trimmed</code> where, from <code>wq</code>, you:</p>
+<ul>
+<li><strong>Select</strong> the following columns: station_code, month, day, temp, sal, do_pct, and depth.<br />
+</li>
+<li><strong>Filter</strong> for rows where <code>depth</code> is <em>not</em> missing. (Hint: <code>is.na</code> is the function that checks to see if a value <em>is</em> missing. How would you look for “not” <code>is.na</code>? It’s similar to “not equal to” from above.)</li>
+</ul>
+</div>
+<div id="your-turn-4-answer" class="section level3">
+<h3>Your Turn 4 answer</h3>
+<p>Last chance to try it yourself…. but if you didn’t get it to work, run this chunk:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">wq_trimmed &lt;-<span class="st"> </span>wq <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="st">    </span><span class="kw">select</span>(station_code, month, day, temp, sal, do_pct, depth) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb21-3" title="3"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(depth))</a></code></pre></div>
+<p>How much has been removed from the data frame?</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">dim</span>(wq)</a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="kw">dim</span>(wq_trimmed)</a>
+<a class="sourceLine" id="cb22-3" title="3"></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="co"># can subtract both rows and columns at once!</span></a>
+<a class="sourceLine" id="cb22-5" title="5"><span class="kw">dim</span>(wq) <span class="op">-</span><span class="st"> </span><span class="kw">dim</span>(wq_trimmed)</a>
+<a class="sourceLine" id="cb22-6" title="6"></a>
+<a class="sourceLine" id="cb22-7" title="7"><span class="co"># why did all those rows go away?</span></a></code></pre></div>
+<p>Some SWMP stations report <code>depth</code>, which is water depth above the data logger; and others report <code>level</code>, which is water surface relative to a standard datum (NAVD88). There is an important distinction that’s irrelevant for what we want to cover today, so here we have only kept the stations that report <code>depth</code>.</p>
+</div>
+</div>
+<div id="modifying-data-frames-with-mutate" class="section level2">
+<h2>Modifying data frames with <code>mutate()</code></h2>
+<p>It’s easy to make a new variable out of other variables in the data frame using <code>mutate()</code>. This operates on rows. Say we want to talk about water depth (or make a graph!) to the public - we might want to change the units from meters to feet. That’s simple multiplication! So here, we’ll add a column to the data frame.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">wq_trimmed &lt;-<span class="st"> </span>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb23-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">depth_ft =</span> depth <span class="op">*</span><span class="st"> </span><span class="fl">3.28</span>)</a>
+<a class="sourceLine" id="cb23-3" title="3"><span class="kw">View</span>(wq_trimmed)</a></code></pre></div>
+<p>You can also use other columns. You can use them in mathematical expressions, or just combine them:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">monthday =</span> <span class="kw">paste</span>(month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),  <span class="co"># see ?paste for more info</span></a>
+<a class="sourceLine" id="cb24-3" title="3">           <span class="dt">meaningless_thing =</span> sal <span class="op">+</span><span class="st"> </span>temp) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<p>You can even use a column immediately after creating it!</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">wq_trimmed &lt;-<span class="st"> </span>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">monthday =</span> <span class="kw">paste</span>(month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),</a>
+<a class="sourceLine" id="cb25-3" title="3">           <span class="dt">meaningless_thing =</span> sal <span class="op">+</span><span class="st"> </span>temp,</a>
+<a class="sourceLine" id="cb25-4" title="4">           <span class="dt">even_more_meaningless_thing =</span> meaningless_thing <span class="op">+</span><span class="st"> </span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb25-5" title="5"></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="kw">View</span>(wq_trimmed)</a></code></pre></div>
+<div id="your-turn-5" class="section level3">
+<h3>Your Turn 5</h3>
+<p>There are two parts to this. You can approach them separately or within the same series of pipes. Remember to save the result as the new, better, <code>wq_trimmed</code> data frame!</p>
+<ol style="list-style-type: decimal">
+<li>Now that we’ve started creating more columns, it might make sense to get rid of some old ones. Remove <code>monthday</code> and <code>meaningless_thing</code> from the <code>wq_trimmed</code> data frame.<br />
+</li>
+<li>The same person that wants to see <code>depth</code> in feet rather than meters <em>also</em> wants you to turn <code>temp</code> into Fahrenheit, from Celsius. You’ve looked up the conversion. Now create a new column, <code>temp_f</code>, with the new variable. <strong>F = (9/5)(temp in C) + 32</strong></li>
+</ol>
+<p>As with Your Turn 4, the answer is below. No peeking!</p>
+</div>
+<div id="your-turn-5-answer" class="section level3">
+<h3>Your Turn 5 answer</h3>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">wq_trimmed &lt;-<span class="st"> </span>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb26-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>monthday, <span class="op">-</span>meaningless_thing) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb26-3" title="3"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">temp_f =</span> (<span class="dv">9</span><span class="op">/</span><span class="dv">5</span>) <span class="op">*</span><span class="st"> </span>temp <span class="op">+</span><span class="st"> </span><span class="dv">32</span>)</a>
+<a class="sourceLine" id="cb26-4" title="4"><span class="kw">View</span>(wq_trimmed)</a></code></pre></div>
+</div>
+</div>
+<div id="dates-and-times" class="section level2">
+<h2>Dates and Times</h2>
+<p>Because we’ve just worked a little bit with mutate, and one of the things you may find yourself doing is trying to get dates and times in the right format, this seems like a good time to tackle it. We will make up a vector of date-like things and learn how to use the <code>lubridate</code> package to deal with them.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">dates_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">dates01 =</span> <span class="kw">c</span>(<span class="st">&quot;1-1-2019&quot;</span>, <span class="st">&quot;1-2-2019&quot;</span>, <span class="st">&quot;1-3-2019&quot;</span>),</a>
+<a class="sourceLine" id="cb27-2" title="2">                       <span class="dt">dates02 =</span> <span class="kw">c</span>(<span class="st">&quot;1/1/19&quot;</span>, <span class="st">&quot;1/2/19&quot;</span>, <span class="st">&quot;1/3/19&quot;</span>),</a>
+<a class="sourceLine" id="cb27-3" title="3">                       <span class="dt">dates03 =</span> <span class="kw">c</span>(<span class="st">&quot;2019-01-01&quot;</span>, <span class="st">&quot;2019-01-02&quot;</span>, <span class="st">&quot;2019-01-03&quot;</span>),</a>
+<a class="sourceLine" id="cb27-4" title="4">                       <span class="dt">datetime =</span> <span class="kw">c</span>(<span class="st">&quot;2019-01-01 12:00&quot;</span>, <span class="st">&quot;2019-01-01 13:00&quot;</span>, </a>
+<a class="sourceLine" id="cb27-5" title="5">                                    <span class="st">&quot;2019-01-01 14:00&quot;</span>))</a></code></pre></div>
+<p>How are these showing up in the data frame?</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="kw">glimpse</span>(dates_df)</a></code></pre></div>
+<p>If you try to make a time-series graph, it might work; but it will be very, very slow when you have more than 3 values. You also run the risk of dates being shuffled so they’re out of order. So we really want those dates to be <em>dates</em>.</p>
+<p>This seems like it should be easy in base R, using the <code>as.Date()</code> function, but that can give you the wrong output (without so much as a warning!) if your date isn’t formatted the way the function thinks it should be:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">as.Date</span>(dates01),</a>
+<a class="sourceLine" id="cb29-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">as.Date</span>(dates02),</a>
+<a class="sourceLine" id="cb29-4" title="4">           <span class="dt">dates03_changed =</span> <span class="kw">as.Date</span>(dates03))</a></code></pre></div>
+<p>Enter the lubridate package. It lets you turn character strings and even numbers into dates - or date/times! - by specifying the order of what’s in your data as the function name.</p>
+<p>That’s hard to explain, so let’s just do it. The first column is currently in “m-d-y” (with 4 digits in the year) format. The second is “m/d/y” - similar format, but only two digits in the year. The same lubridate function will work for both of these: <code>mdy()</code>.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</a>
+<a class="sourceLine" id="cb30-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb30-4" title="4"><span class="st">    </span><span class="kw">glimpse</span>()  <span class="co"># to see the structure</span></a></code></pre></div>
+<p>Notice the returned date is “yyyy-mm-dd”, which is actually a standard date format known as ISO 8601.</p>
+<p>For our 3rd column, it’s already in that order we need, but we need it to be a date. Any guesses as to what that function is?</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</a>
+<a class="sourceLine" id="cb31-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02),</a>
+<a class="sourceLine" id="cb31-4" title="4">           <span class="dt">dates03_changed =</span> <span class="op">---</span>(dates03)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb31-5" title="5"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<p>Times make things trickier. R wants date-time columns to be in a format called <code>POSIX</code>. There is a function in base R called <code>as.POSIXct()</code> that lets you transform different values into that format. It is a burden though to specify the format you’re feeding into the function. (If you don’t want to take my word for it, look up the help file: <code>?as.POSIXct</code>)</p>
+<p>The lubridate package makes it just as simple as the dates we did above. Again, the exact function you want to use depends on the order your date appears, but all you have to do is add <code>_hm</code> or <code>_hms</code> to the end of your <code>mdy</code>/<code>ymd</code> function, depending on whether your time has seconds or not.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</a>
+<a class="sourceLine" id="cb32-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02),</a>
+<a class="sourceLine" id="cb32-4" title="4">           <span class="dt">dates03_changed =</span> <span class="kw">ymd</span>(dates03),</a>
+<a class="sourceLine" id="cb32-5" title="5">           <span class="dt">datetime_changed =</span> <span class="kw">ymd_hm</span>(datetime)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-6" title="6"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<p>If you only work with times in their own column, the <code>hms</code> library may help you out. There are differences between operating systems and software versions in how Excel stores dates and times in its brain, so <strong>be VERY CAREFUL</strong> and check your transformed data to make sure you have the output you think you have!</p>
+<div id="your-turn-6" class="section level3">
+<h3>Your Turn 6</h3>
+<p><code>mutate</code> can be used to add a complete vector of the same value. That is what we’ll do below. Fill in the skeleton code to create a column for a full yyyy-mm-dd style date, then make a <em>line</em> graph of temperature throughout the year at the water quality stations, and color them by station code.</p>
+<p>Which of these stations do you think is at the NERR in Alaska?</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb33-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="dv">2016</span>,</a>
+<a class="sourceLine" id="cb33-3" title="3">           <span class="dt">date_pasted =</span> <span class="kw">paste</span>(year, month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),</a>
+<a class="sourceLine" id="cb33-4" title="4">           <span class="dt">date =</span> <span class="op">----</span>(date_pasted)) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># hint: use a lubridate function!</span></a>
+<a class="sourceLine" id="cb33-5" title="5"><span class="st">    </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb33-6" title="6"><span class="st">    </span>geom_<span class="op">----</span>(<span class="dt">mapping =</span> <span class="op">----</span>(<span class="dt">x =</span> date, <span class="dt">y =</span> temp_f, <span class="dt">col =</span> <span class="op">----</span>))</a></code></pre></div>
+<hr />
+<hr />
+<hr />
+</div>
+</div>
+</div>
+<div id="group-wise-operations-with-group_by-and-summarize" class="section level1">
+<h1>Group-wise operations with <code>group_by()</code> and <code>summarize()</code></h1>
+<p>Say we want to find out how many birds were seen by state in the ebird dataset. We can do that. These operations are also great for lumping data into daily, monthly, or yearly averages, which we’ll do on the SWMP dataset.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb34-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb34-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb34-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb34-5" title="5"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<p>We can also group by combinations of multiple variables:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb35-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb35-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb35-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb35-5" title="5"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div id="your-turn-7" class="section level3">
+<h3>Your Turn 7</h3>
+<p>How would you group the <code>wq_trimmed</code> dataset to calculate monthly average temperature and salinity, and their standard deviations, at each station?</p>
+</div>
+<div id="your-turn-7-answer" class="section level3">
+<h3>Your Turn 7 answer</h3>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb36-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb36-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_temp =</span> <span class="kw">mean</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb36-4" title="4">              <span class="dt">sd_temp =</span> <span class="kw">sd</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb36-5" title="5">              <span class="dt">mean_sal =</span> <span class="kw">mean</span>(sal, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb36-6" title="6">              <span class="dt">sd_sal =</span> <span class="kw">sd</span>(sal, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb36-7" title="7"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+</div>
+<div id="aside---more-summarize-options" class="section level3">
+<h3>Aside - more summarize options</h3>
+<p>There are a couple of useful variants of <code>summarize</code> for special cases. Note that you can only perform one summary function with these (so you couldn’t calculate mean <em>and</em> standard deviation in this way).</p>
+<div id="summarize_all" class="section level4">
+<h4><code>summarize_all()</code></h4>
+<p>Applies a function to all of the non-grouping variables! (Even “day”, which isn’t meaningful, but that’s okay)</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-3" title="3"><span class="st">    </span><span class="kw">summarize_all</span>(mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb37-4" title="4"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+</div>
+<div id="summarize_at" class="section level4">
+<h4><code>summarize_at()</code></h4>
+<p>To choose which variables to summarize</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-3" title="3"><span class="st">    </span><span class="kw">summarize_at</span>(<span class="kw">c</span>(<span class="st">&quot;temp&quot;</span>, <span class="st">&quot;sal&quot;</span>), mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb38-4" title="4"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+</div>
+</div>
+<div id="end-aside-1" class="section level3">
+<h3>end aside</h3>
+</div>
+</div>
+<div id="sort" class="section level1">
+<h1>Sort</h1>
+<p>You can also sort your data frame (or its summary) using <code>arrange()</code>. Let’s put our ebird summary in order by species, then state:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb39-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb39-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb39-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb39-5" title="5"><span class="st">    </span><span class="kw">arrange</span>(species, state) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb39-6" title="6"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<p>Or put it in order by <code>max_presence</code>:</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb40-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb40-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb40-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb40-5" title="5"><span class="st">    </span><span class="kw">arrange</span>(max_presence) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb40-6" title="6"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<p>If you want the highest number at the top instead, use <code>desc()</code>:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb41-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-5" title="5"><span class="st">    </span><span class="kw">arrange</span>(<span class="kw">desc</span>(max_presence)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-6" title="6"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div id="your-turn-8" class="section level3">
+<h3>Your Turn 8</h3>
+<p>Use the <code>wq_trimmed</code> data frame. Calculate monthly average temp, sal, and do_pct (at least - more variables if you like) <em>for each station</em>. Make a scatterplot using any two of these variables. Use what you’ve learned about <code>ggplot2</code>’s options to adjust the look and feel of the graph. Is the relationship what you expected it to be? Does it vary by site?</p>
+<p>Here’s one possible way to go about it. You could also make a new data frame of the summary variables, and use that in a separate call to <code>ggplot</code>.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb42-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb42-3" title="3"><span class="st">    </span><span class="kw">summarize_all</span>(mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb42-4" title="4"><span class="st">    </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb42-5" title="5"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sal, <span class="dt">y =</span> do_pct, <span class="dt">col =</span> station_code), </a>
+<a class="sourceLine" id="cb42-6" title="6">               <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb42-7" title="7"><span class="st">    </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb42-8" title="8"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>station_code)</a></code></pre></div>
+<p><img src="02-Wrangle_files/figure-html/unnamed-chunk-48-1.png" width="672" /></p>
+</div>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNlc3Npb24gMiAtIFdyYW5nbGUgRGF0YSINCm91dHB1dDoNCiAgaHRtbF9kb2N1bWVudDoNCiAgICBodG1sX2RvY3VtZW50Og0KICAgIHRvYzogdHJ1ZQ0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCi0tLQ0KDQo8ZGl2IGNsYXNzPSJwcm9ncmVzcyI+DQogIDxkaXYgY2xhc3M9InByb2dyZXNzLWJhciBwcm9ncmVzcy1iYXItc3RyaXBlZCIgcm9sZT0icHJvZ3Jlc3NiYXIiIHN0eWxlPSJ3aWR0aDogNDUlIiBhcmlhLXZhbHVlbm93PSIxMCIgYXJpYS12YWx1ZW1pbj0iMCIgYXJpYS12YWx1ZW1heD0iMTAwIj48L2Rpdj4NCjwvZGl2Pg0KDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFLCByZXN1bHRzID0gImhpZGUiKQ0KYGBgDQoNCmBgYHtyLCBtZXNzYWdlID0gRkFMU0UsIHdhcm5pbmcgPSBGQUxTRX0NCmxpYnJhcnkoZHBseXIpDQpsaWJyYXJ5KHRpZHlyKQ0KbGlicmFyeShsdWJyaWRhdGUpDQpsaWJyYXJ5KGhlcmUpDQpsaWJyYXJ5KGdncGxvdDIpDQpgYGANCg0KDQpTb21ldGltZXMsIHRoZSBkYXRhIHdlJ3JlIHdvcmtpbmcgd2l0aCBpcyBub3QgcXVpdGUgcmVhZHkgZm9yIHdoYXRldmVyIGl0IGlzIHdlIHdhbnQgdG8gZG8uIFdlIG1heSBuZWVkIHRvIHN1bW1hcml6ZSB0aGUgZGF0YSBiYXNlZCBvbiBzb21lIGdyb3VwLCBjYWxjdWxhdGUgYWRkaXRpb25hbCBwYXJhbWV0ZXJzLCBzdWJzZXQgdGhlIGRhdGEsIG9yIGV2ZW4gY29tcGxldGVseSByZXNoYXBlIGl0LiBUaGUgcGFja2FnZXMgYGRwbHlyYCBhbmQgYHRpZHlyYCBjYW4gaGVscCB3aXRoIHRoZXNlIHRhc2tzISAgDQoNCiMgZHBseXIgdmVyYnMgDQoNClRoZXJlIGFyZSB0aHJlZSBrZXkgZnVuY3Rpb25zIGluIGBkcGx5cmAgdGhhdCBhcmUgcmVhbGx5IHRoZSB3b3JraG9yc2VzIG9mIHRoZSB0aWR5dmVyc2U6ICANCg0KKyAgYGZpbHRlcigpYCB0byBzdWJzZXQgYmFzZWQgb24gcm93cw0KKyAgYHNlbGVjdCgpYCB0byBzdWJzZXQgYmFzZWQgb24gY29sdW1ucyAgDQorICBgbXV0YXRlKClgIHRvIGFkZCBvciBtb2RpZnkgdmFsdWVzIGluIGNvbHVtbnMgIA0KDQpXZSB3aWxsIHVzZSBkYXRhIGRvd25sb2FkZWQgZnJvbSBlYmlyZCB0byBleHBsb3JlIHRoZXNlLiAgDQoNCkZpcnN0LCBsZXQncyByZWFkIGluIHRoZSBlYmlyZCBkYXRhIGFuZCBleHBsb3JlIGl0OiAgDQoNCmBgYHtyLCByZXN1bHRzID0gJ2hpZGUnfQ0KZWJpcmQgPC0gcmVhZC5jc3YoaGVyZTo6aGVyZSgiZGF0YSIsICJlQmlyZF93b3Jrc2hvcC5jc3YiKSwgc3RyaW5nc0FzRmFjdG9ycyA9IEZBTFNFKQ0KZ2xpbXBzZShlYmlyZCkgICAjIDE4Myw3NDIgcm93cw0KYGBgDQoNCg0KDQpXZSBtYXkgbm90IHRhbGsgYWJvdXQgdGhpcyBpbiB0aGUgd29ya3Nob3AsIGJ1dCB0aGVyZSBhcmUgKHByZXN1bWFibHkgYWNjaWRlbnRhbGx5KSBkdXBsaWNhdGUgcm93cyBpbiB0aGlzIGRhdGEgZnJhbWUuIFdlIGNhbiBzZWUgdGhlbSB3aXRoOiAgDQoNCmBgYHtyLCByZXN1bHRzID0gImhpZGUifQ0KamFuaXRvcjo6Z2V0X2R1cGVzKGViaXJkKSAgICMgMjIgZHVwbGljYXRlcyA9IDExIHRoYXQgbmVlZCB0byBnbw0KYGBgDQoNClRoZXkgYXJlIGV4YWN0IGNvcGllcyBvZiBvdGhlciByb3dzLCBub3QgYW55IGRhdGEgZW50cnkgcHJvYmxlbXMgKGFsdGhvdWdoIGBqYW5pdG9yOjpnZXRfZHVwZXMoKWAgaXMgdmVyeSBoZWxwZnVsIGluIGZpbmRpbmcgZXJyb3JzIGxpa2UgbWlzLXR5cGluZyBhIHNpdGUgbmFtZSksIHNvIHdlJ2xsIGp1c3QgZ2V0IHJpZCBvZiB0aGVtIGJ5IHVzaW5nIGBkcGx5cjo6ZGlzdGluY3QoKWAgdG8ga2VlcCBvbmx5IHVuaXF1ZSByb3dzLiAgDQoNCmBgYHtyfQ0KZWJpcmQgPC0gZHBseXI6OmRpc3RpbmN0KGViaXJkKQ0KZ2xpbXBzZShlYmlyZCkgICAjIDE4Myw3MzEgcm93cw0KYGBgDQoNCg0KDQoNCiMjIENob29zZSBfcm93c186IGBmaWx0ZXIoKWAgIA0KDQpUaGlzIGhhcyBhIGxvdCBvZiByb3dzLiBXZSBtaWdodCBvbmx5IGJlIGludGVyZXN0ZWQgaW4gb2JzZXJ2YXRpb25zIGFib3V0IGEgc2luZ2xlIGJpcmQgc3BlY2llcywgb3IgZnJvbSBhIHNpbmdsZSBzdGF0ZSwgd2hpY2ggbWVhbnMgd2Ugd2FudCB0byBjaG9vc2Ugcm93cy4gVG8gZG8gdGhpcywgd2UgdXNlIHRoZSB2ZXJiIGBmaWx0ZXIoKWAuIFRoZSBkYXRhIGFyZ3VtZW50IGNvbWVzIGZpcnN0LCB0aGVuIHRoZSBjb25kaXRpb24uICAgIA0KDQpgYGB7cn0NCmZpbHRlcihlYmlyZCwgc3RhdGUgPT0gIkFLIikNCmBgYA0KDQpBbHRlcm5hdGVseSwgd2UgY2FuIHVzZSB0aGUgcGlwZSwgd2hpY2ggZmVlZHMgdGhlIGRhdGEgZnJhbWUgcmVzdWx0aW5nIGZyb20gZXZlcnl0aGluZyBiZWZvcmUgaXQgaW50byB3aGF0ZXZlciBpcyBuZXh0IChyZWFkIGl0IGFzICJhbmQgdGhlbi4uLi4iKSAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIGZpbHRlcihzdGF0ZSA9PSAiQUsiKQ0KYGBgDQoNCkxldCdzIGdvIGFoZWFkIGFuZCBhc3NpZ24gaXQgdG8gYSBkYXRhIGZyYW1lIHNvIHdlIGNhbiBleHBsb3JlIGl0IGEgbGl0dGxlIG1vcmUuICANCg0KYGBge3J9DQplYmlyZF9BSyA8LSBlYmlyZCAlPiUgDQogICAgZmlsdGVyKHN0YXRlID09ICJBSyIpDQpnbGltcHNlKGViaXJkX0FLKQ0KYGBgDQoNCk5vdGljZSBhIGNvdXBsZSB0aGluZ3MgaGVyZTogIA0KDQorICBXZSB1c2UgYD09YCB0byBzcGVjaWZ5IGFuIGV4YWN0IGNvbmRpdGlvbi4gSWYgd2Ugd2VyZSB3b3JraW5nIHdpdGggbnVtYmVycywgd2UgY291bGQgdXNlOiAgDQogICAgKyAgYDxgICANCiAgICArICBgPD1gICANCiAgICArICBgPT1gICANCiAgICArICBgIT1gICgqKm5vdCoqIGVxdWFsIHRvKSAgDQogICAgKyAgYD49YCAgDQogICAgKyAgYD5gICANCisgIFRoZSBjb25kaXRpb24gc3BlY2lmaWVkIGluc2lkZSBgZmlsdGVyKClgIE1VU1QgcmV0dXJuIGVpdGhlciB0cnVlIG9yIGZhbHNlLCBmb3IgZWFjaCByb3cuICANCg0KDQojIyMgbXVsdGlwbGUgY29uZGl0aW9ucyAgDQoNCldlIGNhbiBmaWx0ZXIgYmFzZWQgb24gbW9yZSB0aGFuIG9uZSBjcml0ZXJpb24sIGUuZy4gaWYgd2Ugd2FudCBhbGwgYmlyZHMgZnJvbSBBbGFza2EsIGJ1dCBvbmx5IGluIHRoZSB5ZWFyIDIwMDg6ICANCg0KYGBge3J9DQplYmlyZF9BS18yMDA4IDwtIGViaXJkICU+JSANCiAgICBmaWx0ZXIoc3RhdGUgPT0gIkFLIiwNCiAgICAgICAgICAgeWVhciA9PSAyMDA4KQ0KaGVhZChlYmlyZF9BS18yMDA4KQ0KYGBgDQoNCg0KKipOb3RlKio6IEl0IGRvZXNuJ3QgbWF0dGVyIGlmIHlvdSBzZWxlY3QgYHN0YXRlYCBvciBgeWVhcmAgZmlyc3QgLSB5b3UgY2FuIGRvIGVpdGhlci4gIA0KDQpCZWNhdXNlIHdlJ3JlIGp1c3QgZXhwZXJpbWVudGluZyB3aXRoIGZpbHRlcmluZyBoZXJlLCBhbmQgZG9uJ3QgcmVhbGx5IG5lZWQgdG8gc2F2ZSB0aGVzZSBhcyBkYXRhIGZyYW1lcyBpbiBvdXIgZW52aXJvbm1lbnQsIEknbSBnb2luZyB0byBzdG9wIGFzc2lnbmluZyB0byBvYmplY3RzIGFuZCBzdGFydCBkb2luZyB0aGlzOiAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIGZpbHRlcihzdGF0ZSA9PSAiQUsiLA0KICAgICAgICAgICB5ZWFyID09IDIwMDgpIA0KYGBgDQoNCk5vdGUsIHRoYXQncyBub3Qgc29tZXRoaW5nIHlvdSB3YW50IHRvIGRvIGlmIHlvdSBhY3R1YWxseSBuZWVkIHRvIHdvcmsgd2l0aCB0aGUgZGF0YSBmcmFtZSBsYXRlciEgIA0KDQoqKioNCg0KIyMjIFlvdXIgVHVybiAxICANCg0KSG93IGNvdWxkIHdlIHB1bGwgb3V0IGJpcmRzIGluIEFsYXNrYSAoQUspLCBiZWZvcmUgMjAxMD8gKEhpbnQ6IHlvdSBjYW4gdXNlIHRoZSBzYW1lIHN5bWJvbHMgb24geWVhciB0aGF0IHlvdSB3b3VsZCB1c2Ugd2l0aCBhbnkgb3RoZXIgbnVtYmVycykgIA0KDQpgYGB7cn0NCg0KYGBgDQoNCioqKiAgDQoNCiMjIyBtdWx0aXBsZSBjb25kaXRpb25zLCBjb250LiAgDQoNCldoYXQgaWYgd2Ugd2FudCB0byBsb29rIGF0IGJpcmRzIGZyb20gbW9yZSB0aGFuIG9uZSBzdGF0ZT8gVGhlcmUgYXJlIGEgZmV3IHdheXMgdG8gZG8gdGhpcy4gDQoNClBlcmhhcHMgdGhlIGVhc2llc3QgaXMgdG8gbWFrZSBhIHZlY3RvciBvZiB0aGUgc3RhdGVzIHlvdSdyZSBpbnRlcmVzdGVkIGluOiAgDQoNCmBgYHtyfQ0KbXlfc3RhdGVzIDwtIGMoIkFLIiwgIkFMIiwgIk1TIikNCmBgYA0KDQpBbmQgdGhlbiB1c2UgYCVpbiVgIGluIHRoZSBmaWx0ZXIgc3RhdGVtZW50LCB0byBzYXksIGUuZy4gImFueSBvZiB0aGUgc3RhdGVzIF9pbl8gdGhpcyB2ZWN0b3IiOiANCg0KYGBge3J9DQplYmlyZF9teXN0YXRlcyA8LSBlYmlyZCAlPiUgDQogICAgZmlsdGVyKHllYXIgPT0gMjAwOCwNCiAgICAgICAgICAgc3RhdGUgJWluJSBteV9zdGF0ZXMpIA0KaGVhZChlYmlyZF9teXN0YXRlcykNCg0KIyBtYWtlIHN1cmUgdGhlIHN0YXRlcyB3ZSBuYW1lZCwgYW5kIG9ubHkgdGhlIHN0YXRlcyB3ZSBuYW1lZCwgYXJlIHJlcHJlc2VudGVkOg0KdW5pcXVlKGViaXJkX215c3RhdGVzJHN0YXRlKQ0KYGBgDQoNCllvdSBjb3VsZCBhbHNvIHNraXAgdGhlIHN0ZXAgb2YgbmFtaW5nIHRoZSB2ZWN0b3Igc2VwYXJhdGVseTogIA0KDQpgYGB7cn0NCmViaXJkICU+JSANCiAgICBmaWx0ZXIoeWVhciA9PSAyMDA4LA0KICAgICAgICAgICBzdGF0ZSAlaW4lIGMoIkFLIiwgIkFMIiwgIk1TIikpICU+JSANCiAgICBoZWFkKCkNCmBgYA0KDQoNCiMjIyBZb3VyIFR1cm4gMiAgDQoNCkhvdyB3b3VsZCB5b3UgZmlsdGVyIHRoZSBkYXRhIHRvIGNvbnRhaW4gb25seSB0aGUgc3BlY2llcyAiQW1lcmljYW4gQ29vdCIgZnJvbSBNUyBhbmQgRkwgKHlvdXIgaW5zdHJ1Y3RvcnMnIHN0YXRlcyksIGluIGFsbCB5ZWFycyAqZXhjZXB0KiAyMDEwPyBBc3NpZ24gdGhpcyBvYmplY3QgdG8gYSBkYXRhIGZyYW1lIGFuZCB2ZXJpZnkgKHVzaW5nIGB1bmlxdWUoKWApIHRoYXQgeW91IGRpZCBpdCByaWdodC4gICAgDQoNCmBgYHtyfQ0KDQpgYGANCg0KDQoqKioNCioqKg0KDQoNCiMjIENob29zZSBfY29sdW1uc186IGBzZWxlY3QoKWAgIA0KDQpXaGVuIHlvdSdyZSB3b3JraW5nIHdpdGggYSBsb3Qgb2YgZGF0YSwgeW91IG1heSBub3Qgd2FudCBvciBuZWVkIHRvIGtlZXAgYWxsIHRoZSBjb2x1bW5zIHlvdSBzdGFydGVkIHdpdGguIEluIHRoaXMgY2FzZSwgYHNlbGVjdCgpYCBpcyB3aGF0IHlvdSBuZWVkLg0KDQpUaGUgZWJpcmQgZGF0YSBmcmFtZSBkb2Vzbid0IGhhdmUgdG9vIG1hbnkgY29sdW1ucywgYnV0IHRoYXQgbWFrZXMgaXQgZWFzeSB0byBzZWUgZXhhY3RseSB3aGF0IHdlJ3JlIGRvaW5nISBMZXQncyBwcmV0ZW5kIHdlIG9ubHkgd2FudCB0byBrZWVwIHNwZWNpZXMsIHN0YXRlLCBhbmQgeWVhci4gV2UgY2FuIGRvIHRoaXMgdHdvIHdheXM6ICANCg0KRmlyc3QsIGJ5IHNlbGVjdGluZyB0aGUgY29sdW1ucyB3ZSAqKmRvKiogd2FudCB0byBrZWVwOiAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIHNlbGVjdChzcGVjaWVzLCBzdGF0ZSwgeWVhcikgJT4lIA0KICAgIGhlYWQoKQ0KYGBgDQoNCg0KT3Igc2Vjb25kLCBieSB1c2luZyBhIGAtYCBpbiBmcm9udCBvZiB0aGUgY29sdW1ucyB3ZSAqKmRvbid0Kiogd2FudCB0byBrZWVwOiAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIHNlbGVjdCgtc2FtcGxlc2l6ZSwgLXByZXNlbmNlKSAlPiUgDQogICAgaGVhZCgpDQpgYGANCg0KRWl0aGVyIG9mIHRoZXNlIGNhbiBiZSByZWFsbHkgaGFuZHkgZGVwZW5kaW5nIG9uIHdoYXQgeW91ciBvcmlnaW5hbCBkYXRhIGZyYW1lIGxvb2tzIGxpa2UgYW5kIHdoYXQgeW91J3JlIHRyeWluZyB0byBkbyEgIA0KDQoNCk9yZGVyICoqZG9lcyoqIG1hdHRlciBpbiBgc2VsZWN0KClgOyByZW1lbWJlciBpdCBkaWRuJ3QgbWF0dGVyIGluIGBmaWx0ZXIoKWAuIEluIGBzZWxlY3QoKWAsIHNlbGVjdGlvbnMgYXJlIG1hZGUgaW4gdGhlIG9yZGVyIHNwZWNpZmllZCAtIHNvIGlmIHlvdSB3YW50IHRvIHJlYXJyYW5nZSB0aGUgY29sdW1ucyBvZiB5b3VyIGRhdGEsIHlvdSBjYW4gZG8gaXQgd2l0aCB0aGlzIGNvbW1hbmQhICANCg0KYGBge3J9DQplYmlyZCAlPiUgDQogICAgc2VsZWN0KHllYXIsIHN0YXRlLCBzcGVjaWVzKSAlPiUgDQogICAgaGVhZCgpDQpgYGANCg0KDQpZb3UgY2FuIGFsc28gbW92ZSBqdXN0IG9uZSBvciBhIGZldyBjb2x1bW5zIHRvIHRoZSBiZWdpbm5pbmcgYnkgc3BlY2lmeWluZyBpdC90aGVtLCBhbmQgdGhlbiBgZXZlcnl0aGluZygpYCAtIGl0IGtlZXBzIGFsbCBvdGhlciBjb2x1bW5zLCBpbiB0aGVpciBvcmlnaW5hbCBvcmRlcjogIA0KDQpgYGB7cn0NCmViaXJkICU+JSANCiAgICBzZWxlY3QoeWVhciwgZXZlcnl0aGluZygpKSAlPiUgDQogICAgZ2xpbXBzZSgpDQpgYGANCg0KDQojIyMgQXNpZGU6IGhlbHBlciBmdW5jdGlvbnMgIA0KDQpTb21ldGltZXMgeW91IGhhdmUgYSBsb3Qgb2YgY29sdW1ucyB0aGF0IHN0YXJ0IHdpdGggdGhlIHNhbWUgcHJlZml4LCBvciB0aGF0IGVuZCB3aXRoIHRoZSBzYW1lIGFwcGVuZGVkIG1hdHRlcjsgbWF5YmUgeW91IHdhbnQgdG8ga2VlcCBhbGwgb2YgdGhlbSAob3IgZ2V0IHJpZCBvZiBhbGwgb2YgdGhlbSkuIEluIHRoZXNlIHNpdHVhdGlvbnMsIHlvdSBjYW4gdXNlIHRoZSBoZWxwZXIgZnVuY3Rpb25zIGBzdGFydHNfd2l0aCgpYCBhbmQgYGVuZHNfd2l0aCgpYC4gU2VlIHRoZSBgZHBseXJgIGNoZWF0c2hlZXQgZm9yIG90aGVyIHBvc3NpYmxlIGhlbHBlciBmdW5jdGlvbnMuICANCg0KSW4gb3VyIGxpdHRsZSBleGFtcGxlLCBsZXQncyBrZWVwIGNvbHVtbnMgd2hvc2UgbmFtZXMgc3RhcnQgd2l0aCAncyc6ICANCg0KYGBge3J9DQplYmlyZCAlPiUgDQogICAgc2VsZWN0KHN0YXJ0c193aXRoKCJzIikpICU+JSANCiAgICBnbGltcHNlKCkNCmBgYA0KDQpPciBjb2x1bW5zIHRoYXQgZW5kIHdpdGggJ2UnOiAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIHNlbGVjdChlbmRzX3dpdGgoImUiKSkgJT4lIA0KICAgIGdsaW1wc2UoKQ0KYGBgDQoNCkNoZWNrIG91dCB0aGUgZGF0YSB3cmFuZ2xpbmcgY2hlYXQgc2hlZXQgZm9yIG1vcmUgaGVscGVyIGZ1bmN0aW9ucy4gDQoNCiMjIyBlbmQgYXNpZGUgIA0KDQoNCg0KIyMjIFlvdXIgVHVybiAzICANCg0KRnJvbSB0aGUgZWJpcmQgZGF0YSwgc3Vic2V0IHRvIG9ubHkgaW5jbHVkZSB0aGUgc3BlY2llcyBBbWVyaWNhbiBDb290LCBmcm9tIHRoZSBzdGF0ZXMgRkwsIEFMLCBhbmQgTVMuIEtlZXAgb25seSB0aGUgc3RhdGUsIHllYXIsIGFuZCBwcmVzZW5jZSBjb2x1bW5zLiBXaGF0IGlzIHRoZSBwcm9wZXIgb3JkZXIgb2Ygb3BlcmF0aW9ucyBpbiB0aGlzIGNhc2U/ICANCg0KYGBge3J9DQoNCmBgYA0KDQoNCioqKiAgDQoqKiogIA0KDQojIyBTZXR1cCBmb3IgdGhlIG5leHQgYml0IG9mIHRoZSB3b3Jrc2hvcCAgDQoNCldlJ3JlIGdvaW5nIHRvIHN3aXRjaCBkYXRhc2V0cyBoZXJlLCB0byBvbmUgdGhhdCdzIGEgbGl0dGxlIG1vcmUgY29tcGxpY2F0ZWQ6IHdhdGVyIHF1YWxpdHkgZGF0YSEgU2hhbm5vbiBoYXMgZG93bmxvYWRlZCBtb25pdG9yaW5nIGRhdGEgZnJvbSBzZXZlcmFsIE5hdGlvbmFsIEVzdHVhcmluZSBSZXNlYXJjaCBSZXNlcnZlcyBmb3IgdGhlIHllYXIgMjAxNiwgYW5kIGhhcyBhbHJlYWR5IHdpbm5vd2VkIGl0IGRvd24gYSBiaXQgdG8gZGFpbHkgYXZlcmFnZXMgb2Ygc2V2ZXJhbCBwYXJhbWV0ZXJzIHRoYXQgd2UgbWVhc3VyZS4gV2Ugd2lsbCB1c2UgeW91ciBuZXdmb3VuZCBgc2VsZWN0KClgIGFuZCBgZmlsdGVyKClgIHNraWxscyB0byBtYWtlIGl0IGFuIGV2ZW4gc21hbGxlciBkYXRhIGZyYW1lLCBhbmQgdGhlbiB3ZSdsbCBsZWFybiBob3cgdG8gY2FsY3VsYXRlIG5ldyBjb2x1bW5zIGFuZCBkbyBncm91cC13aXNlIHN1bW1hcmllcy4gIA0KDQpgYGB7cn0NCndxIDwtIHJlYWQuY3N2KGhlcmU6OmhlcmUoImRhdGEiLCAiZGFpbHlfd3EuY3N2IiksIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSkNCmdsaW1wc2Uod3EpDQpgYGANCg0KDQojIyMgWW91ciBUdXJuIDQgIA0KDQpCZWNhdXNlIHRoaXMgaXMgc28gaW1wb3J0YW50LCBJIHdpbGwgcHJvdmlkZSB3b3JraW5nIGNvZGUgaW4gYSBjaHVuayBiZWxvdy4gQnV0IHBsZWFzZSBhdHRlbXB0IGl0IHlvdXJzZWxmIGZpcnN0ISEhICANCg0KV2UgaGF2ZSByZWFkIGluIHRoZSBkYWlseSB3YXRlciBxdWFsaXR5IGRhdGEgZm9yIGEgZmV3IHN0YXRpb25zLiBDcmVhdGUgYSBuZXcgZGF0YSBmcmFtZSBjYWxsZWQgYHdxX3RyaW1tZWRgIHdoZXJlLCBmcm9tIGB3cWAsIHlvdTogICAgDQoNCisgICoqU2VsZWN0KiogdGhlIGZvbGxvd2luZyBjb2x1bW5zOiAgc3RhdGlvbl9jb2RlLCBtb250aCwgZGF5LCB0ZW1wLCBzYWwsIGRvX3BjdCwgYW5kIGRlcHRoLiAgDQorICAqKkZpbHRlcioqIGZvciByb3dzIHdoZXJlIGBkZXB0aGAgaXMgKm5vdCogbWlzc2luZy4gKEhpbnQ6IGBpcy5uYWAgaXMgdGhlIGZ1bmN0aW9uIHRoYXQgY2hlY2tzIHRvIHNlZSBpZiBhIHZhbHVlICppcyogbWlzc2luZy4gSG93IHdvdWxkIHlvdSBsb29rIGZvciAibm90IiBgaXMubmFgPyAgIEl0J3Mgc2ltaWxhciB0byAibm90IGVxdWFsIHRvIiBmcm9tIGFib3ZlLikNCg0KYGBge3J9DQoNCmBgYA0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KIyMjIFlvdXIgVHVybiA0IGFuc3dlciAgIA0KDQpMYXN0IGNoYW5jZSB0byB0cnkgaXQgeW91cnNlbGYuLi4uIA0KYnV0IGlmIHlvdSBkaWRuJ3QgZ2V0IGl0IHRvIHdvcmssIHJ1biB0aGlzIGNodW5rOiAgDQoNCmBgYHtyfQ0Kd3FfdHJpbW1lZCA8LSB3cSAlPiUgDQogICAgc2VsZWN0KHN0YXRpb25fY29kZSwgbW9udGgsIGRheSwgdGVtcCwgc2FsLCBkb19wY3QsIGRlcHRoKSAlPiUgDQogICAgZmlsdGVyKCFpcy5uYShkZXB0aCkpDQpgYGANCg0KDQoNCg0KSG93IG11Y2ggaGFzIGJlZW4gcmVtb3ZlZCBmcm9tIHRoZSBkYXRhIGZyYW1lPyAgDQoNCmBgYHtyfQ0KZGltKHdxKQ0KZGltKHdxX3RyaW1tZWQpDQoNCiMgY2FuIHN1YnRyYWN0IGJvdGggcm93cyBhbmQgY29sdW1ucyBhdCBvbmNlIQ0KZGltKHdxKSAtIGRpbSh3cV90cmltbWVkKQ0KDQojIHdoeSBkaWQgYWxsIHRob3NlIHJvd3MgZ28gYXdheT8NCmBgYA0KDQoNClNvbWUgU1dNUCBzdGF0aW9ucyByZXBvcnQgYGRlcHRoYCwgd2hpY2ggaXMgd2F0ZXIgZGVwdGggYWJvdmUgdGhlIGRhdGEgbG9nZ2VyOyBhbmQgb3RoZXJzIHJlcG9ydCBgbGV2ZWxgLCB3aGljaCBpcyB3YXRlciBzdXJmYWNlIHJlbGF0aXZlIHRvIGEgc3RhbmRhcmQgZGF0dW0gKE5BVkQ4OCkuIFRoZXJlIGlzIGFuIGltcG9ydGFudCBkaXN0aW5jdGlvbiB0aGF0J3MgaXJyZWxldmFudCBmb3Igd2hhdCB3ZSB3YW50IHRvIGNvdmVyIHRvZGF5LCBzbyBoZXJlIHdlIGhhdmUgb25seSBrZXB0IHRoZSBzdGF0aW9ucyB0aGF0IHJlcG9ydCBgZGVwdGhgLiAgDQoNCg0KDQojIyBNb2RpZnlpbmcgZGF0YSBmcmFtZXMgd2l0aCBgbXV0YXRlKClgICANCg0KDQpJdCdzIGVhc3kgdG8gbWFrZSBhIG5ldyB2YXJpYWJsZSBvdXQgb2Ygb3RoZXIgdmFyaWFibGVzIGluIHRoZSBkYXRhIGZyYW1lIHVzaW5nIGBtdXRhdGUoKWAuIFRoaXMgb3BlcmF0ZXMgb24gcm93cy4gU2F5IHdlIHdhbnQgdG8gdGFsayBhYm91dCB3YXRlciBkZXB0aCAob3IgbWFrZSBhIGdyYXBoISkgdG8gdGhlIHB1YmxpYyAtIHdlIG1pZ2h0IHdhbnQgdG8gY2hhbmdlIHRoZSB1bml0cyBmcm9tIG1ldGVycyB0byBmZWV0LiBUaGF0J3Mgc2ltcGxlIG11bHRpcGxpY2F0aW9uISBTbyBoZXJlLCB3ZSdsbCBhZGQgYSBjb2x1bW4gdG8gdGhlIGRhdGEgZnJhbWUuICAgICAgDQoNCmBgYHtyfQ0Kd3FfdHJpbW1lZCA8LSB3cV90cmltbWVkICU+JSANCiAgICBtdXRhdGUoZGVwdGhfZnQgPSBkZXB0aCAqIDMuMjgpDQpWaWV3KHdxX3RyaW1tZWQpDQpgYGANCg0KDQpZb3UgY2FuIGFsc28gdXNlIG90aGVyIGNvbHVtbnMuIFlvdSBjYW4gdXNlIHRoZW0gaW4gbWF0aGVtYXRpY2FsIGV4cHJlc3Npb25zLCBvciBqdXN0IGNvbWJpbmUgdGhlbTogICAgICAgIA0KDQpgYGB7cn0NCndxX3RyaW1tZWQgJT4lIA0KICAgIG11dGF0ZShtb250aGRheSA9IHBhc3RlKG1vbnRoLCBkYXksIHNlcCA9ICItIiksICAjIHNlZSA/cGFzdGUgZm9yIG1vcmUgaW5mbw0KICAgICAgICAgICBtZWFuaW5nbGVzc190aGluZyA9IHNhbCArIHRlbXApICU+JSANCiAgICBWaWV3KCkNCmBgYA0KDQoNCllvdSBjYW4gZXZlbiB1c2UgYSBjb2x1bW4gaW1tZWRpYXRlbHkgYWZ0ZXIgY3JlYXRpbmcgaXQhICANCg0KYGBge3J9DQp3cV90cmltbWVkIDwtIHdxX3RyaW1tZWQgJT4lIA0KICAgIG11dGF0ZShtb250aGRheSA9IHBhc3RlKG1vbnRoLCBkYXksIHNlcCA9ICItIiksDQogICAgICAgICAgIG1lYW5pbmdsZXNzX3RoaW5nID0gc2FsICsgdGVtcCwNCiAgICAgICAgICAgZXZlbl9tb3JlX21lYW5pbmdsZXNzX3RoaW5nID0gbWVhbmluZ2xlc3NfdGhpbmcgKyA1KQ0KDQpWaWV3KHdxX3RyaW1tZWQpDQpgYGANCg0KDQoNCg0KIyMjIFlvdXIgVHVybiA1ICANCg0KVGhlcmUgYXJlIHR3byBwYXJ0cyB0byB0aGlzLiBZb3UgY2FuIGFwcHJvYWNoIHRoZW0gc2VwYXJhdGVseSBvciB3aXRoaW4gdGhlIHNhbWUgc2VyaWVzIG9mIHBpcGVzLiBSZW1lbWJlciB0byBzYXZlIHRoZSByZXN1bHQgYXMgdGhlIG5ldywgYmV0dGVyLCBgd3FfdHJpbW1lZGAgZGF0YSBmcmFtZSEgICANCg0KMS4gIE5vdyB0aGF0IHdlJ3ZlIHN0YXJ0ZWQgY3JlYXRpbmcgbW9yZSBjb2x1bW5zLCBpdCBtaWdodCBtYWtlIHNlbnNlIHRvIGdldCByaWQgb2Ygc29tZSBvbGQgb25lcy4gUmVtb3ZlIGBtb250aGRheWAgYW5kIGBtZWFuaW5nbGVzc190aGluZ2AgZnJvbSB0aGUgYHdxX3RyaW1tZWRgIGRhdGEgZnJhbWUuICANCjIuICBUaGUgc2FtZSBwZXJzb24gdGhhdCB3YW50cyB0byBzZWUgYGRlcHRoYCBpbiBmZWV0IHJhdGhlciB0aGFuIG1ldGVycyAqYWxzbyogd2FudHMgeW91IHRvIHR1cm4gYHRlbXBgIGludG8gRmFocmVuaGVpdCwgZnJvbSBDZWxzaXVzLiBZb3UndmUgbG9va2VkIHVwIHRoZSBjb252ZXJzaW9uLiBOb3cgY3JlYXRlIGEgbmV3IGNvbHVtbiwgYHRlbXBfZmAsIHdpdGggdGhlIG5ldyB2YXJpYWJsZS4gICAqKkYgPSAoOS81KSh0ZW1wIGluIEMpICsgMzIqKg0KDQoNCkFzIHdpdGggWW91ciBUdXJuIDQsIHRoZSBhbnN3ZXIgaXMgYmVsb3cuIE5vIHBlZWtpbmchICANCg0KDQpgYGB7cn0NCg0KYGBgDQoNCg0KDQoNCg0KDQoNCg0KDQoNCiMjIyBZb3VyIFR1cm4gNSBhbnN3ZXIgIA0KDQpgYGB7cn0NCndxX3RyaW1tZWQgPC0gd3FfdHJpbW1lZCAlPiUgDQogICAgc2VsZWN0KC1tb250aGRheSwgLW1lYW5pbmdsZXNzX3RoaW5nKSAlPiUgDQogICAgbXV0YXRlKHRlbXBfZiA9ICg5LzUpICogdGVtcCArIDMyKQ0KVmlldyh3cV90cmltbWVkKQ0KYGBgDQoNCg0KDQojIyBEYXRlcyBhbmQgVGltZXMgIA0KDQpCZWNhdXNlIHdlJ3ZlIGp1c3Qgd29ya2VkIGEgbGl0dGxlIGJpdCB3aXRoIG11dGF0ZSwgYW5kIG9uZSBvZiB0aGUgdGhpbmdzIHlvdSBtYXkgZmluZCB5b3Vyc2VsZiBkb2luZyBpcyB0cnlpbmcgdG8gZ2V0IGRhdGVzIGFuZCB0aW1lcyBpbiB0aGUgcmlnaHQgZm9ybWF0LCB0aGlzIHNlZW1zIGxpa2UgYSBnb29kIHRpbWUgdG8gdGFja2xlIGl0LiBXZSB3aWxsIG1ha2UgdXAgYSB2ZWN0b3Igb2YgZGF0ZS1saWtlIHRoaW5ncyBhbmQgbGVhcm4gaG93IHRvIHVzZSB0aGUgYGx1YnJpZGF0ZWAgcGFja2FnZSB0byBkZWFsIHdpdGggdGhlbS4gIA0KDQpgYGB7cn0NCmRhdGVzX2RmIDwtIGRhdGEuZnJhbWUoZGF0ZXMwMSA9IGMoIjEtMS0yMDE5IiwgIjEtMi0yMDE5IiwgIjEtMy0yMDE5IiksDQogICAgICAgICAgICAgICAgICAgICAgIGRhdGVzMDIgPSBjKCIxLzEvMTkiLCAiMS8yLzE5IiwgIjEvMy8xOSIpLA0KICAgICAgICAgICAgICAgICAgICAgICBkYXRlczAzID0gYygiMjAxOS0wMS0wMSIsICIyMDE5LTAxLTAyIiwgIjIwMTktMDEtMDMiKSwNCiAgICAgICAgICAgICAgICAgICAgICAgZGF0ZXRpbWUgPSBjKCIyMDE5LTAxLTAxIDEyOjAwIiwgIjIwMTktMDEtMDEgMTM6MDAiLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICIyMDE5LTAxLTAxIDE0OjAwIikpDQoNCmBgYA0KDQpIb3cgYXJlIHRoZXNlIHNob3dpbmcgdXAgaW4gdGhlIGRhdGEgZnJhbWU/ICANCg0KYGBge3J9DQpnbGltcHNlKGRhdGVzX2RmKQ0KYGBgDQoNCklmIHlvdSB0cnkgdG8gbWFrZSBhIHRpbWUtc2VyaWVzIGdyYXBoLCBpdCBtaWdodCB3b3JrOyBidXQgaXQgd2lsbCBiZSB2ZXJ5LCB2ZXJ5IHNsb3cgd2hlbiB5b3UgaGF2ZSBtb3JlIHRoYW4gMyB2YWx1ZXMuIFlvdSBhbHNvIHJ1biB0aGUgcmlzayBvZiBkYXRlcyBiZWluZyBzaHVmZmxlZCBzbyB0aGV5J3JlIG91dCBvZiBvcmRlci4gU28gd2UgcmVhbGx5IHdhbnQgdGhvc2UgZGF0ZXMgdG8gYmUgKmRhdGVzKi4gIA0KDQpUaGlzIHNlZW1zIGxpa2UgaXQgc2hvdWxkIGJlIGVhc3kgaW4gYmFzZSBSLCB1c2luZyB0aGUgYGFzLkRhdGUoKWAgZnVuY3Rpb24sIGJ1dCB0aGF0IGNhbiBnaXZlIHlvdSB0aGUgd3Jvbmcgb3V0cHV0ICh3aXRob3V0IHNvIG11Y2ggYXMgYSB3YXJuaW5nISkgaWYgeW91ciBkYXRlIGlzbid0IGZvcm1hdHRlZCB0aGUgd2F5IHRoZSBmdW5jdGlvbiB0aGlua3MgaXQgc2hvdWxkIGJlOiAgDQoNCmBgYHtyfQ0KZGF0ZXNfZGYgJT4lIA0KICAgIG11dGF0ZShkYXRlczAxX2NoYW5nZWQgPSBhcy5EYXRlKGRhdGVzMDEpLA0KICAgICAgICAgICBkYXRlczAyX2NoYW5nZWQgPSBhcy5EYXRlKGRhdGVzMDIpLA0KICAgICAgICAgICBkYXRlczAzX2NoYW5nZWQgPSBhcy5EYXRlKGRhdGVzMDMpKQ0KYGBgDQoNCkVudGVyIHRoZSBsdWJyaWRhdGUgcGFja2FnZS4gSXQgbGV0cyB5b3UgdHVybiBjaGFyYWN0ZXIgc3RyaW5ncyBhbmQgZXZlbiBudW1iZXJzIGludG8gZGF0ZXMgLSBvciBkYXRlL3RpbWVzISAtIGJ5IHNwZWNpZnlpbmcgdGhlIG9yZGVyIG9mIHdoYXQncyBpbiB5b3VyIGRhdGEgYXMgdGhlIGZ1bmN0aW9uIG5hbWUuICANCg0KVGhhdCdzIGhhcmQgdG8gZXhwbGFpbiwgc28gbGV0J3MganVzdCBkbyBpdC4gVGhlIGZpcnN0IGNvbHVtbiBpcyBjdXJyZW50bHkgaW4gIm0tZC15IiAod2l0aCA0IGRpZ2l0cyBpbiB0aGUgeWVhcikgZm9ybWF0LiBUaGUgc2Vjb25kIGlzICJtL2QveSIgLSBzaW1pbGFyIGZvcm1hdCwgYnV0IG9ubHkgdHdvIGRpZ2l0cyBpbiB0aGUgeWVhci4gVGhlIHNhbWUgbHVicmlkYXRlIGZ1bmN0aW9uIHdpbGwgd29yayBmb3IgYm90aCBvZiB0aGVzZTogYG1keSgpYC4gDQoNCmBgYHtyfQ0KZGF0ZXNfZGYgJT4lIA0KICAgIG11dGF0ZShkYXRlczAxX2NoYW5nZWQgPSBtZHkoZGF0ZXMwMSksDQogICAgICAgICAgIGRhdGVzMDJfY2hhbmdlZCA9IG1keShkYXRlczAyKSkgJT4lIA0KICAgIGdsaW1wc2UoKSAgIyB0byBzZWUgdGhlIHN0cnVjdHVyZQ0KYGBgDQoNCk5vdGljZSB0aGUgcmV0dXJuZWQgZGF0ZSBpcyAieXl5eS1tbS1kZCIsIHdoaWNoIGlzIGFjdHVhbGx5IGEgc3RhbmRhcmQgZGF0ZSBmb3JtYXQga25vd24gYXMgSVNPIDg2MDEuICANCg0KRm9yIG91ciAzcmQgY29sdW1uLCBpdCdzIGFscmVhZHkgaW4gdGhhdCBvcmRlciB3ZSBuZWVkLCBidXQgd2UgbmVlZCBpdCB0byBiZSBhIGRhdGUuIEFueSBndWVzc2VzIGFzIHRvIHdoYXQgdGhhdCBmdW5jdGlvbiBpcz8gIA0KDQpgYGB7ciwgZXZhbCA9IEZBTFNFfQ0KZGF0ZXNfZGYgJT4lIA0KICAgIG11dGF0ZShkYXRlczAxX2NoYW5nZWQgPSBtZHkoZGF0ZXMwMSksDQogICAgICAgICAgIGRhdGVzMDJfY2hhbmdlZCA9IG1keShkYXRlczAyKSwNCiAgICAgICAgICAgZGF0ZXMwM19jaGFuZ2VkID0gLS0tKGRhdGVzMDMpKSAlPiUgDQogICAgZ2xpbXBzZSgpDQpgYGANCg0KDQpUaW1lcyBtYWtlIHRoaW5ncyB0cmlja2llci4gUiB3YW50cyBkYXRlLXRpbWUgY29sdW1ucyB0byBiZSBpbiBhIGZvcm1hdCBjYWxsZWQgYFBPU0lYYC4gVGhlcmUgaXMgYSBmdW5jdGlvbiBpbiBiYXNlIFIgY2FsbGVkIGBhcy5QT1NJWGN0KClgIHRoYXQgbGV0cyB5b3UgdHJhbnNmb3JtIGRpZmZlcmVudCB2YWx1ZXMgaW50byB0aGF0IGZvcm1hdC4gSXQgaXMgYSBidXJkZW4gdGhvdWdoIHRvIHNwZWNpZnkgdGhlIGZvcm1hdCB5b3UncmUgZmVlZGluZyBpbnRvIHRoZSBmdW5jdGlvbi4gKElmIHlvdSBkb24ndCB3YW50IHRvIHRha2UgbXkgd29yZCBmb3IgaXQsIGxvb2sgdXAgdGhlIGhlbHAgZmlsZTogIGA/YXMuUE9TSVhjdGApDQoNClRoZSBsdWJyaWRhdGUgcGFja2FnZSBtYWtlcyBpdCBqdXN0IGFzIHNpbXBsZSBhcyB0aGUgZGF0ZXMgd2UgZGlkIGFib3ZlLiBBZ2FpbiwgdGhlIGV4YWN0IGZ1bmN0aW9uIHlvdSB3YW50IHRvIHVzZSBkZXBlbmRzIG9uIHRoZSBvcmRlciB5b3VyIGRhdGUgYXBwZWFycywgYnV0IGFsbCB5b3UgaGF2ZSB0byBkbyBpcyBhZGQgYF9obWAgb3IgYF9obXNgIHRvIHRoZSBlbmQgb2YgeW91ciBgbWR5YC9geW1kYCBmdW5jdGlvbiwgZGVwZW5kaW5nIG9uIHdoZXRoZXIgeW91ciB0aW1lIGhhcyBzZWNvbmRzIG9yIG5vdC4gIA0KDQpgYGB7cn0NCmRhdGVzX2RmICU+JSANCiAgICBtdXRhdGUoZGF0ZXMwMV9jaGFuZ2VkID0gbWR5KGRhdGVzMDEpLA0KICAgICAgICAgICBkYXRlczAyX2NoYW5nZWQgPSBtZHkoZGF0ZXMwMiksDQogICAgICAgICAgIGRhdGVzMDNfY2hhbmdlZCA9IHltZChkYXRlczAzKSwNCiAgICAgICAgICAgZGF0ZXRpbWVfY2hhbmdlZCA9IHltZF9obShkYXRldGltZSkpICU+JSANCiAgICBnbGltcHNlKCkNCmBgYA0KDQoNCklmIHlvdSBvbmx5IHdvcmsgd2l0aCB0aW1lcyBpbiB0aGVpciBvd24gY29sdW1uLCB0aGUgYGhtc2AgbGlicmFyeSBtYXkgaGVscCB5b3Ugb3V0LiBUaGVyZSBhcmUgZGlmZmVyZW5jZXMgYmV0d2VlbiBvcGVyYXRpbmcgc3lzdGVtcyBhbmQgc29mdHdhcmUgdmVyc2lvbnMgaW4gaG93IEV4Y2VsIHN0b3JlcyBkYXRlcyBhbmQgdGltZXMgaW4gaXRzIGJyYWluLCBzbyAqKmJlIFZFUlkgQ0FSRUZVTCoqIGFuZCBjaGVjayB5b3VyIHRyYW5zZm9ybWVkIGRhdGEgdG8gbWFrZSBzdXJlIHlvdSBoYXZlIHRoZSBvdXRwdXQgeW91IHRoaW5rIHlvdSBoYXZlISAgDQoNCg0KIyMjIFlvdXIgVHVybiA2ICANCg0KYG11dGF0ZWAgY2FuIGJlIHVzZWQgdG8gYWRkIGEgY29tcGxldGUgdmVjdG9yIG9mIHRoZSBzYW1lIHZhbHVlLiBUaGF0IGlzIHdoYXQgd2UnbGwgZG8gYmVsb3cuIEZpbGwgaW4gdGhlIHNrZWxldG9uIGNvZGUgdG8gY3JlYXRlIGEgY29sdW1uIGZvciBhIGZ1bGwgeXl5eS1tbS1kZCBzdHlsZSBkYXRlLCB0aGVuIG1ha2UgYSAqbGluZSogZ3JhcGggb2YgdGVtcGVyYXR1cmUgdGhyb3VnaG91dCB0aGUgeWVhciBhdCB0aGUgd2F0ZXIgcXVhbGl0eSBzdGF0aW9ucywgYW5kIGNvbG9yIHRoZW0gYnkgc3RhdGlvbiBjb2RlLiAgDQoNCldoaWNoIG9mIHRoZXNlIHN0YXRpb25zIGRvIHlvdSB0aGluayBpcyBhdCB0aGUgTkVSUiBpbiBBbGFza2E/ICANCg0KYGBge3IsIGV2YWwgPSBGQUxTRX0NCndxX3RyaW1tZWQgJT4lIA0KICAgIG11dGF0ZSh5ZWFyID0gMjAxNiwNCiAgICAgICAgICAgZGF0ZV9wYXN0ZWQgPSBwYXN0ZSh5ZWFyLCBtb250aCwgZGF5LCBzZXAgPSAiLSIpLA0KICAgICAgICAgICBkYXRlID0gLS0tLShkYXRlX3Bhc3RlZCkpICU+JSAgICMgaGludDogdXNlIGEgbHVicmlkYXRlIGZ1bmN0aW9uIQ0KICAgIGdncGxvdCgpICsNCiAgICBnZW9tXy0tLS0obWFwcGluZyA9IC0tLS0oeCA9IGRhdGUsIHkgPSB0ZW1wX2YsIGNvbCA9IC0tLS0pKQ0KYGBgDQoNCg0KDQoqKiogIA0KKioqICANCioqKiAgDQoNCiMgR3JvdXAtd2lzZSBvcGVyYXRpb25zIHdpdGggYGdyb3VwX2J5KClgIGFuZCBgc3VtbWFyaXplKClgICANCg0KU2F5IHdlIHdhbnQgdG8gZmluZCBvdXQgaG93IG1hbnkgYmlyZHMgd2VyZSBzZWVuIGJ5IHN0YXRlIGluIHRoZSBlYmlyZCBkYXRhc2V0LiBXZSBjYW4gZG8gdGhhdC4gVGhlc2Ugb3BlcmF0aW9ucyBhcmUgYWxzbyBncmVhdCBmb3IgbHVtcGluZyBkYXRhIGludG8gZGFpbHksIG1vbnRobHksIG9yIHllYXJseSBhdmVyYWdlcywgd2hpY2ggd2UnbGwgZG8gb24gdGhlIFNXTVAgZGF0YXNldC4gICAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIGdyb3VwX2J5KHN0YXRlKSAlPiUgDQogICAgc3VtbWFyaXplKG1lYW5fcHJlc2VuY2UgPSBtZWFuKHByZXNlbmNlLCBuYS5ybSA9IFRSVUUpLA0KICAgICAgICAgICAgICBtYXhfcHJlc2VuY2UgPSBtYXgocHJlc2VuY2UsIG5hLnJtID0gVFJVRSkpICU+JSANCiAgICBWaWV3KCkNCmBgYA0KDQoNCg0KV2UgY2FuIGFsc28gZ3JvdXAgYnkgY29tYmluYXRpb25zIG9mIG11bHRpcGxlIHZhcmlhYmxlczogIA0KDQpgYGB7cn0NCmViaXJkICU+JSANCiAgICBncm91cF9ieShzdGF0ZSwgc3BlY2llcykgJT4lIA0KICAgIHN1bW1hcml6ZShtZWFuX3ByZXNlbmNlID0gbWVhbihwcmVzZW5jZSwgbmEucm0gPSBUUlVFKSwNCiAgICAgICAgICAgICAgbWF4X3ByZXNlbmNlID0gbWF4KHByZXNlbmNlLCBuYS5ybSA9IFRSVUUpKSAlPiUgDQogICAgVmlldygpDQpgYGANCg0KDQoNCiMjIyBZb3VyIFR1cm4gNyAgDQoNCkhvdyB3b3VsZCB5b3UgZ3JvdXAgdGhlIGB3cV90cmltbWVkYCBkYXRhc2V0IHRvIGNhbGN1bGF0ZSBtb250aGx5IGF2ZXJhZ2UgdGVtcGVyYXR1cmUgYW5kIHNhbGluaXR5LCBhbmQgdGhlaXIgc3RhbmRhcmQgZGV2aWF0aW9ucywgYXQgZWFjaCBzdGF0aW9uPyAgDQoNCmBgYHtyfQ0KDQpgYGANCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQojIyMgWW91ciBUdXJuIDcgYW5zd2VyICANCg0KYGBge3J9DQp3cV90cmltbWVkICU+JSANCiAgICBncm91cF9ieShzdGF0aW9uX2NvZGUsIG1vbnRoKSAlPiUgDQogICAgc3VtbWFyaXplKG1lYW5fdGVtcCA9IG1lYW4odGVtcCwgbmEucm0gPSBUUlVFKSwNCiAgICAgICAgICAgICAgc2RfdGVtcCA9IHNkKHRlbXAsIG5hLnJtID0gVFJVRSksDQogICAgICAgICAgICAgIG1lYW5fc2FsID0gbWVhbihzYWwsIG5hLnJtID0gVFJVRSksDQogICAgICAgICAgICAgIHNkX3NhbCA9IHNkKHNhbCwgbmEucm0gPSBUUlVFKSkgJT4lIA0KICAgIFZpZXcoKQ0KYGBgDQoNCg0KIyMjIEFzaWRlIC0gbW9yZSBzdW1tYXJpemUgb3B0aW9ucyAgDQoNClRoZXJlIGFyZSBhIGNvdXBsZSBvZiB1c2VmdWwgdmFyaWFudHMgb2YgYHN1bW1hcml6ZWAgZm9yIHNwZWNpYWwgY2FzZXMuIE5vdGUgdGhhdCB5b3UgY2FuIG9ubHkgcGVyZm9ybSBvbmUgc3VtbWFyeSBmdW5jdGlvbiB3aXRoIHRoZXNlIChzbyB5b3UgY291bGRuJ3QgY2FsY3VsYXRlIG1lYW4gKmFuZCogc3RhbmRhcmQgZGV2aWF0aW9uIGluIHRoaXMgd2F5KS4gICAgDQoNCiMjIyMgYHN1bW1hcml6ZV9hbGwoKWAgIA0KDQpBcHBsaWVzIGEgZnVuY3Rpb24gdG8gYWxsIG9mIHRoZSBub24tZ3JvdXBpbmcgdmFyaWFibGVzISAoRXZlbiAiZGF5Iiwgd2hpY2ggaXNuJ3QgbWVhbmluZ2Z1bCwgYnV0IHRoYXQncyBva2F5KSAgDQoNCmBgYHtyfQ0Kd3FfdHJpbW1lZCAlPiUgDQogICAgZ3JvdXBfYnkoc3RhdGlvbl9jb2RlLCBtb250aCkgJT4lIA0KICAgIHN1bW1hcml6ZV9hbGwobWVhbiwgbmEucm0gPSBUUlVFKSAlPiUgDQogICAgVmlldygpDQpgYGANCg0KDQojIyMjIGBzdW1tYXJpemVfYXQoKWAgIA0KDQpUbyBjaG9vc2Ugd2hpY2ggdmFyaWFibGVzIHRvIHN1bW1hcml6ZSAgDQoNCmBgYHtyfQ0Kd3FfdHJpbW1lZCAlPiUgDQogICAgZ3JvdXBfYnkoc3RhdGlvbl9jb2RlLCBtb250aCkgJT4lIA0KICAgIHN1bW1hcml6ZV9hdChjKCJ0ZW1wIiwgInNhbCIpLCBtZWFuLCBuYS5ybSA9IFRSVUUpICU+JSANCiAgICBWaWV3KCkNCmBgYA0KDQojIyMgZW5kIGFzaWRlICANCg0KDQojIFNvcnQgIA0KDQoNCllvdSBjYW4gYWxzbyBzb3J0IHlvdXIgZGF0YSBmcmFtZSAob3IgaXRzIHN1bW1hcnkpIHVzaW5nIGBhcnJhbmdlKClgLiBMZXQncyBwdXQgb3VyIGViaXJkIHN1bW1hcnkgaW4gb3JkZXIgYnkgc3BlY2llcywgdGhlbiBzdGF0ZTogIA0KDQpgYGB7cn0NCmViaXJkICU+JSANCiAgICBncm91cF9ieShzdGF0ZSwgc3BlY2llcykgJT4lIA0KICAgIHN1bW1hcml6ZShtZWFuX3ByZXNlbmNlID0gbWVhbihwcmVzZW5jZSwgbmEucm0gPSBUUlVFKSwNCiAgICAgICAgICAgICAgbWF4X3ByZXNlbmNlID0gbWF4KHByZXNlbmNlLCBuYS5ybSA9IFRSVUUpKSAlPiUgDQogICAgYXJyYW5nZShzcGVjaWVzLCBzdGF0ZSkgJT4lIA0KICAgIFZpZXcoKQ0KYGBgDQoNCg0KT3IgcHV0IGl0IGluIG9yZGVyIGJ5IGBtYXhfcHJlc2VuY2VgOiAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIGdyb3VwX2J5KHN0YXRlLCBzcGVjaWVzKSAlPiUgDQogICAgc3VtbWFyaXplKG1lYW5fcHJlc2VuY2UgPSBtZWFuKHByZXNlbmNlLCBuYS5ybSA9IFRSVUUpLA0KICAgICAgICAgICAgICBtYXhfcHJlc2VuY2UgPSBtYXgocHJlc2VuY2UsIG5hLnJtID0gVFJVRSkpICU+JSANCiAgICBhcnJhbmdlKG1heF9wcmVzZW5jZSkgJT4lIA0KICAgIFZpZXcoKQ0KYGBgDQoNCg0KSWYgeW91IHdhbnQgdGhlIGhpZ2hlc3QgbnVtYmVyIGF0IHRoZSB0b3AgaW5zdGVhZCwgdXNlIGBkZXNjKClgOiAgDQoNCmBgYHtyfQ0KZWJpcmQgJT4lIA0KICAgIGdyb3VwX2J5KHN0YXRlLCBzcGVjaWVzKSAlPiUgDQogICAgc3VtbWFyaXplKG1lYW5fcHJlc2VuY2UgPSBtZWFuKHByZXNlbmNlLCBuYS5ybSA9IFRSVUUpLA0KICAgICAgICAgICAgICBtYXhfcHJlc2VuY2UgPSBtYXgocHJlc2VuY2UsIG5hLnJtID0gVFJVRSkpICU+JSANCiAgICBhcnJhbmdlKGRlc2MobWF4X3ByZXNlbmNlKSkgJT4lIA0KICAgIFZpZXcoKQ0KYGBgDQoNCg0KDQoNCiMjIyBZb3VyIFR1cm4gOCAgDQoNClVzZSB0aGUgYHdxX3RyaW1tZWRgIGRhdGEgZnJhbWUuIENhbGN1bGF0ZSBtb250aGx5IGF2ZXJhZ2UgdGVtcCwgc2FsLCBhbmQgZG9fcGN0IChhdCBsZWFzdCAtIG1vcmUgdmFyaWFibGVzIGlmIHlvdSBsaWtlKSAqZm9yIGVhY2ggc3RhdGlvbiouIE1ha2UgYSBzY2F0dGVycGxvdCB1c2luZyBhbnkgdHdvIG9mIHRoZXNlIHZhcmlhYmxlcy4gVXNlIHdoYXQgeW91J3ZlIGxlYXJuZWQgYWJvdXQgYGdncGxvdDJgJ3Mgb3B0aW9ucyB0byBhZGp1c3QgdGhlIGxvb2sgYW5kIGZlZWwgb2YgdGhlIGdyYXBoLiBJcyB0aGUgcmVsYXRpb25zaGlwIHdoYXQgeW91IGV4cGVjdGVkIGl0IHRvIGJlPyBEb2VzIGl0IHZhcnkgYnkgc2l0ZT8gICAgIA0KDQpgYGB7cn0NCg0KYGBgDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCkhlcmUncyBvbmUgcG9zc2libGUgd2F5IHRvIGdvIGFib3V0IGl0LiBZb3UgY291bGQgYWxzbyBtYWtlIGEgbmV3IGRhdGEgZnJhbWUgb2YgdGhlIHN1bW1hcnkgdmFyaWFibGVzLCBhbmQgdXNlIHRoYXQgaW4gYSBzZXBhcmF0ZSBjYWxsIHRvIGBnZ3Bsb3RgLiAgDQoNCmBgYHtyfQ0Kd3FfdHJpbW1lZCAlPiUgDQogICAgZ3JvdXBfYnkoc3RhdGlvbl9jb2RlLCBtb250aCkgJT4lIA0KICAgIHN1bW1hcml6ZV9hbGwobWVhbiwgbmEucm0gPSBUUlVFKSAlPiUgDQogICAgZ2dwbG90KCkgKw0KICAgIGdlb21fcG9pbnQoYWVzKHggPSBzYWwsIHkgPSBkb19wY3QsIGNvbCA9IHN0YXRpb25fY29kZSksIA0KICAgICAgICAgICAgICAgc2l6ZSA9IDMsIGFscGhhID0gMC4zKSArDQogICAgdGhlbWVfbWluaW1hbCgpICsNCiAgICBmYWNldF93cmFwKH5zdGF0aW9uX2NvZGUpDQpgYGANCg0K</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("02-Wrangle.Rmd");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

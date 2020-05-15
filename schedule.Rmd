@@ -1,0 +1,23 @@
+---
+title: "Schedule"
+output: html_document
+---
+
+# Week 1
+
+***
+
+### Day 1: Thursday, June 18, 2020
+
+*  Session 0: Introduction 
+    *   Zoom
+    *   [RStudio Cloud](rstudio.cloud)
+*  Session 1: Visualize 
+
+### Day 2: Friday, June 19, 2020
+
+*  Session 2: Wrangle
+
+***
+
+# Week 2

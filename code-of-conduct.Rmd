@@ -1,0 +1,20 @@
+---
+title: "Code of Conduct"
+output: html_document
+---
+
+All attendees, instructors, and organisers at the workshop are required to agree with the following code of conduct. Organizers will enforce this code throughout the workshop. We expect cooperation from all participants to help ensure a safe environment for everyone.
+
+Our workshop is dedicated to providing a harassment-free experience for everyone, regardless of gender identity and expression, age, sexual orientation, disability, body and physical appearance, race, ethnicity, religion (or lack thereof), work experience, or technology choices. We do not tolerate harassment of participants in any form. Sexual language and imagery is not appropriate for any venue. Participants violating these rules may be expelled from the workshop at the discretion of the workshop instructors and/or organisers.
+
+Anything that makes someone feel uncomfortable could be deemed harassment. Harassment includes offensive verbal comments related to gender identity and expression, age, sexual orientation, disability, physical appearance, body size, race, ethnicity, religion, technology choices, sexual images in public spaces, intimidation, stalking, following, harassing photography or recording, sustained disruption of talks or other events, inappropriate physical contact, and unwelcome sexual attention. 
+
+For more information and examples about what constitutes harassment, please refer to [OpenCon’s Code of Conduct in Brief](https://www.opencon2018.org/code_of_conduct)
+
+We expect participants to follow these rules at the workshop. We will assist anyone experiencing harassment to ensure that everyone feels safe for the duration of the workshop. We value your attendance.
+
+## Enforcement
+Participants asked to stop any harassing behavior are expected to comply immediately. If a participant engages in harassing behavior, the organisers may take any action they deem appropriate, including warning the offender or expulsion from the workshop. 
+
+## Acknowledgments
+This Code of Conduct is adapted from the [Conference Code of Conduct (CC BY 3.0)](https://confcodeofconduct.com/)

@@ -1,0 +1,44 @@
+---
+# title: "Integrating R into your work with RStudio and the tidyverse"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+htmltools::tagList(rmarkdown::html_dependency_font_awesome())
+```
+
+
+<div class="jumbotron">
+  <h1 class="display-3">Integrating R into your work with RStudio and the `tidyverse`</h1>
+  <p class="lead">This workshop will take place over the <b>[Zoom](https://unf.zoom.com)</b> platform and is for students and researchers who want to use <b>[R](https://cran.r-project.org)</b> in their daily workflow.</p>
+  <hr class="my-4">
+</div>
+
+***
+
+# Learn to:
+
+*    streamline daily tasks
+*    work with data in a reproducible framework
+*    make publication ready graphs
+*    write your own functions
+*    generate and decipher basic statistical outputs
+
+# Instructors:
+
+Shannon Dunnigan, Guana Tolomato Matanzas NERR  |  [<i class="fa fa-envelope"></i> Shannon.Dunnigan@FloridaDEP.gov](Shannon.Dunnigan@FloridaDEP.gov)  |  [<i class="fa fa-github"></i>  skdunnigan](http://www.github.com/skdunnigan)
+
+
+Kim Cressman, Grand Bay NERR  |  [<i class="fa fa-envelope"></i> Kimberly.Cressman@dmr.ms.gov](Kimberly.Cressman@dmr.ms.gov)  |  [<i class="fa fa-github"></i> swmpkim](http://www.github.com/swmpkim)
+
+***
+
+
+<div class="jumbotron">
+  <center><p>Registration is open. Sign up by clicking the link below!</p></center>
+  <p class="lead">
+    <center><a class="btn btn-warning btn-lg" href="https://www.gtmnerr.org" role="button">Register Now</a>
+  </p></center>
+</div>
+
+
