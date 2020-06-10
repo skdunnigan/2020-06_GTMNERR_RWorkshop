@@ -1,26 +1,23 @@
-# Integrating R into your work with RStudio and the tidyverse
+# Integrating R into your work with RStudio and the `tidyverse`
 
-May 21-22, 2020  
+June 18-19, 25-26, 2020  
 Guana Tolomato Matanzas NERR
-University of North Florida, Hicks Hall
+Zoom Virtual Platform
 
 ### Instructors:
 
-Kim Cressman, Grand Bay NERR  
 Shannon Dunnigan, Guana Tolomato Matanzas NERR
+Kim Cressman, Grand Bay NERR 
 
 ### Agenda:
 
-| Time              | Day 1                         | Day 2                                       |
-| :---------------- | :---------------------------- | :------------------------------------------ |
-| 8:00 - 8:30       | Welcome, Intros, Objectives   | Day 1 recap                                 |
-| 8:30 - 10:00      | Projects and RStudio          | Functions and Loops                         |
-|                   | Visualize Data, part 1        |                                             |
-| **10:00 - 10:30** | **Morning Break**             | **Morning Break**                           |
-| 10:30 - 12:00     | Visualize Data, part 2        | Statistical Output basics                   |
-|                   | Wrangle Data, part 1          |                                             |
-| **12:00 - 13:00** | **Lunch**                     | **Lunch**                                   |
-| 13:00 - 14:00     | Wrangle Data, part 2          | Setting up projects and workflows           |
-| 14:00 - 15:00     | Reshape Data                  | Challenge, Wrap-up, work with your own data |
-| **15:00 - 15:30** | **Afternoon Break**           | **Afternoon Break**                         |
-| 15:30 - 17:00     | Wrap-up, Questions, Challenge | Work with your own data                     |
+| Week              | Day 1                         | Day 2                      |
+| :---------------- | :---------------------------- | :------------------------- |
+|  Week 1           | Welcome, Intros, Objectives   | Day 1 recap                |
+|                   | Projects and RStudio          | 02 - Wrangling Data        |
+|                   | 01 - Visualize Data           |                            |
+|                   |                               |                            |       
+|  Week 2           | Welcome, Intros, Objectives   | Day 1 recap                |
+|                   | 03 - More Wrangling           | 05 - Functions and Loops   | 
+|                   | 04 - Statistical Outputs      |                            | 
+|                   |                               |                            | 
