@@ -5,19 +5,29 @@ navbar:
     href: schedule.html
   - text: Sessions
     menu:
-    - text: Session 0 - Introduction
+    - text: Session 00 - Introduction
       href: introduction.html
-    - text: Session 1 - Visualize Data
-      href: 01-Visualize.html
-    - text: Session 2 - Wrangle Data
-      href: 02-Wrangle.html
+    - text: Session 01 - Visualize Data
+      href: 
+    - text: Session 02 - Wrangle Data
+      href: 
+    - text: Session 03 - Advanced Wrangling
+      href: 
+    - text: Session 04 - Basic Statistical Outputs
+      href:
+    - text: Session 05 - Functions
+      href:
+    - text: Session 06 - Loops
+      href:
   - text: RStudio Cloud
-    href: rstudio.cloud
+    href: https://rstudio.cloud/spaces/69467/join?access_code=qxliGkr1Dgd5tu8JQ8nGoRIWI9%2BOQkWRn8yStGp1
   right:
   - text: About
     href: about.html
   - text: Code of Conduct
     href: code-of-conduct.html
+  - text: Helpful Resources
+    href: Resources_links.html
 output: 
   html_document:
     theme: yeti
