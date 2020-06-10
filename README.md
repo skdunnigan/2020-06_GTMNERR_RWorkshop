@@ -18,6 +18,6 @@ Kim Cressman, Grand Bay NERR
 |                   | 01 - Visualize Data           |                            |
 |                   |                               |                            |       
 |  Week 2           | Welcome, Intros, Objectives   | Day 1 recap                |
-|                   | 03 - More Wrangling           | 05 - Functions and Loops   | 
-|                   | 04 - Statistical Outputs      |                            | 
-|                   |                               |                            | 
+|                   | 03 - More Wrangling           | 05 - Functions             | 
+|                   | 04 - Statistical Outputs      | 06 - Loops                 | 
+|                   |                               |                            |
