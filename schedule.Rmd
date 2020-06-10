@@ -3,6 +3,20 @@ title: "Schedule"
 output: html_document
 ---
 
+### Agenda:
+
+| Week              | Day 1                         | Day 2                      |
+| :---------------- | :---------------------------- | :------------------------- |
+|  Week 1           | Welcome, Intros, Objectives   | Day 1 recap                |
+|                   | Projects and RStudio          | 02 - Wrangling Data        |
+|                   | 01 - Visualize Data           |                            |
+|                   |                               |                            |       
+|  Week 2           | Welcome, Intros, Objectives   | Day 1 recap                |
+|                   | 03 - More Wrangling           | 05 - Functions             | 
+|                   | 04 - Statistical Outputs      | 06 - Loops                 | 
+|                   |                               |                            |
+
+
 # Week 1
 
 ***
@@ -12,7 +26,14 @@ output: html_document
 *  Session 0: Introduction 
     *   Zoom
     *   [RStudio Cloud](rstudio.cloud)
-*  Session 1: Visualize 
+    *   Workflow tips and tricks
+*  Session 1: Visualize
+    *   Introduction and basics
+    *   Mappings and aesthetics
+    *   Facets
+    *   Geoms, stat and position arguments
+    *   What else can I do? (scales, `scale_color_brewer()`, titles and captions, themes, `ggThemeAssist`)
+    *   Saving your plot
 
 ### Day 2: Friday, June 19, 2020
 
@@ -21,3 +42,4 @@ output: html_document
 ***
 
 # Week 2
+

@@ -26,19 +26,26 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 # Instructors:
 
-Shannon Dunnigan, Guana Tolomato Matanzas NERR  |  [<i class="fa fa-envelope"></i> Shannon.Dunnigan@FloridaDEP.gov](Shannon.Dunnigan@FloridaDEP.gov)  |  [<i class="fa fa-github"></i>  skdunnigan](http://www.github.com/skdunnigan)
+Shannon Dunnigan, Guana Tolomato Matanzas NERR  |  <i class="fa fa-envelope"></i> Shannon.Dunnigan@FloridaDEP.gov |  [<i class="fa fa-github"></i>  skdunnigan](http://www.github.com/skdunnigan)
 
 
-Kim Cressman, Grand Bay NERR  |  [<i class="fa fa-envelope"></i> Kimberly.Cressman@dmr.ms.gov](Kimberly.Cressman@dmr.ms.gov)  |  [<i class="fa fa-github"></i> swmpkim](http://www.github.com/swmpkim)
+Kim Cressman, Grand Bay NERR  |  <i class="fa fa-envelope"></i> Kimberly.Cressman@dmr.ms.gov  |  [<i class="fa fa-github"></i> swmpkim](http://www.github.com/swmpkim)
 
 ***
 
+# How to prepare for the Workshop:
+
+<i class="fa fa-users"></i>
+You will have received a link to the Zoom meeting upon acceptance of registration. That link will remain the same for the duration of the workshop and we will begin promptly at 9am each morning (sans any technical issues). 
+
+We will be using [**RStudio Cloud**](https://rstudio.cloud) for this workshop and you will need to login and sign-up (if you do not have a login already) for the associated RStudio Cloud workspace.  [**Here is a video**](https://www.youtube.com/watch?v=k_W1kS10rLw&feature=emb_title) on how to sign in and register for a [free] user account with RStudio Cloud.
+Click the button below to access the workshop workspace.
+
+<p><center><a class="btn btn-warning btn" href="https://rstudio.cloud/spaces/69467/join?access_code=qxliGkr1Dgd5tu8JQ8nGoRIWI9%2BOQkWRn8yStGp1" role="button">RStudio Cloud Workspace</a>
+  </p></center>
 
 <div class="jumbotron">
-  <center><p>Registration is open. Sign up by clicking the link below!</p></center>
-  <p class="lead">
-    <center><a class="btn btn-warning btn-lg" href="https://www.gtmnerr.org" role="button">Register Now</a>
-  </p></center>
+  <center><p>If you did not receive a confirmation email about your registration, be sure to email Kaitlyn Dietz, <i class="fa fa-envelope"></i> Kaitlyn.Dietz@FloridaDEP.gov </p></center>
 </div>
 
 
