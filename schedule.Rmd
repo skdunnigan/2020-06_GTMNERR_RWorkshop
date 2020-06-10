@@ -23,11 +23,11 @@ output: html_document
 
 ### Day 1: Thursday, June 18, 2020
 
-*  Session 0: Introduction 
+*  Session 00: Introduction 
     *   Zoom
     *   [RStudio Cloud](rstudio.cloud)
     *   Workflow tips and tricks
-*  Session 1: Visualize
+*  Session 01: Visualize
     *   Introduction and basics
     *   Mappings and aesthetics
     *   Facets
@@ -37,9 +37,29 @@ output: html_document
 
 ### Day 2: Friday, June 19, 2020
 
-*  Session 2: Wrangle
+*  Day 1 Recap
+
+*  Session 02: Wrangle
+
+*  *Week 1 Homework*
 
 ***
 
 # Week 2
 
+### Day 1: Thursday, June 25, 2020
+
+*  Welcome back and review of Week 1 Homework
+
+*  Session 03: More Wrangling 
+
+*  Session 04: Statistical Outputs
+
+
+### Day 2: Friday, June 26, 2020
+
+*  Day 1 Recap
+
+*  Session 05: Functions
+
+*  Session 06: Loops

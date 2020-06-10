@@ -7,13 +7,7 @@ output: html_document
 htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 ```
 
-<div class="jumbotron">
-<p>This is an [R Markdown website](http://rmarkdown.rstudio.com/rmarkdown_websites.html). 
-The source can be found on [GitHub <i class="fa fa-github"></i>](https://github.com/skdunnigan/2020-06_GTMNERR_RWorkshop).</p>
-<p>
-The link to all the workshop content can be found here: [<button type="button" class="btn btn-info">Workshop Materials</button>](https://github.com/skdunnigan)</p>
-</div>
-
+***
 
 # Who are we?
 
@@ -24,7 +18,7 @@ knitr::include_graphics("images/shannon-dunnigan.png")
 
 #### Shannon Dunnigan, Guana Tolomato Matanzas NERR
 
-[<i class="fa fa-envelope"></i> Shannon.Dunnigan@FloridaDEP.gov](Shannon.Dunnigan@FloridaDEP.gov)  |  [<i class="fa fa-github"></i>  skdunnigan](https://www.github.com/skdunnigan)
+<i class="fa fa-envelope"></i> Shannon.Dunnigan@FloridaDEP.gov  |  [<i class="fa fa-github"></i>  skdunnigan](https://www.github.com/skdunnigan)
 
 *Shannon Dunnigan is the System-Wide Monitoring Program (SWMP) Manager at the Guana Tolomato Matanzas National Estuarine Research Reserve and has been an instructor at the University of North Florida for over five years. She has a love for large data sets and has been using R on monitoring data for the last 3 years; primarily for data wrangling, export, and the creation of data visualizations.*
 
@@ -38,9 +32,19 @@ knitr::include_graphics("images/kim-cressman.jpg")
 
 #### Kim Cressman, Grand Bay NERR
 
-[<i class="fa fa-envelope"></i> Kimberly.Cressman@dmr.ms.gov](Kimberly.Cressman@dmr.ms.gov)  |  [<i class="fa fa-github"></i> swmpkim](https://www.github.com/swmpkim)
+<i class="fa fa-envelope"></i> Kimberly.Cressman@dmr.ms.gov  |  [<i class="fa fa-github"></i> swmpkim](https://www.github.com/swmpkim)
 
 *Kim Cressman is the System-Wide Monitoring Program Coordinator at Grand Bay National Estuarine Research Reserve (NERR). She has been using R on monitoring data for over five years, and has been active in incorporating R into NERR system-wide efforts, such as developing tools to work with surface elevation table data; advising the development of Status Report templates for monitoring data; contributing to NERR-data-related R packages; posting educational “Plot of the Month” posts on SWMPrats.net; and leading R workshops for NERR staff and collaborators.*
+
+***
+
+<div class="jumbotron">
+<p>This is an [R Markdown website](http://rmarkdown.rstudio.com/rmarkdown_websites.html). 
+The source can be found on [GitHub <i class="fa fa-github"></i>](https://github.com/skdunnigan/2020-06_GTMNERR_RWorkshop).</p>
+<p>
+The link to all the workshop content can be found here: [<button type="button" class="btn btn-info">Workshop Materials</button>](https://github.com/skdunnigan/2020-06_GTMNERR_RWorkshop_Materials)</p>
+</div>
+
 
 ***
 
