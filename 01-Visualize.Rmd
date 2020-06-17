@@ -10,13 +10,18 @@ output:
 ---
 
 <div class="progress">
-  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 30%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 28%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
 </div>
 
 
 <!-- This file by Shannon Dunnigan was adapted from the orignal work at https://github.com/rstudio/master-the-tidyverse by RStudio. -->
 
 # Introduction to Data Visualization
+
+<right><blockquote class="blockquote text-right">
+  <p class="mb-0">The greatest value of a picture is when it forces us to notice what we never expected to see.</p>
+  <footer class="blockquote-footer">John W. Tukey</footer>
+</blockquote></right>
 
 Data visualization is the first step in data exploration and is also a great place to start off when learning `R` because it has a clear payoff - "*I want to make a plot, and I did it!*! We will be using the `ggplot2` package. This is one of the earliest packages in the `tidyverse` and it implements the "grammar of graphics", which is a logical system for describing and building graphs.
 
