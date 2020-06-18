@@ -615,10 +615,30 @@ On a sheet of paper, draw how the cases data set would look if it had the same v
 
 ## Pivoting data from wide to long using `pivot_longer()`
 
+Start with the data frame to reshape. Then, pipe ` %>% ` to the `pivot_longer()` function, you'll enter information in a series of arguments:
+
++  cols: numeric indices of columns to collapse (or can be names)
++  names_to: name of the new key columns (a character string)
++  values_to: name of the new value column (a character string)
+
 ```{r}
+# the column identifiers can be in a variety of ways:
 
+# using the numeric indices of the specific columns
+cases %>% 
+  pivot_longer(cols = 2:4, names_to = "year", values_to = "n")
 
+# using the column names
+cases %>% 
+  pivot_longer(cols = c("2011", "2012", "2013"), names_to = "year", values_to = "n")
 
+# or "everything except..."
+cases %>% 
+  pivot_longer(cols = -Country, names_to = "year", values_to = "n")
+
+# or even helper functions like 'starts_with...'
+cases %>% 
+  pivot_longer(cols = starts_with("201"), names_to = "year", values_to = "n")
 ```
 
 ### Your Turn 8
@@ -626,26 +646,35 @@ On a sheet of paper, draw how the cases data set would look if it had the same v
 Use `pivot_longer()` to reorganize `table4a` into three columns: country, year, and cases.
 
 ```{r}
-table4a
+table4a %>% 
+  tidyr::pivot_longer(cols = 2:3, names_to = "year", values_to = "n")
 
 ```
 
 
 ## Pivoting data from long to wide using `pivot_wider()`
 
+Like the pivot_longer() function that you pipe to, pivot_wider() contains two main arguments:
+
++  names_from: column to use for keys (becomes new variable column names)
++  values_from: column to use for values (becomes new column cells)
+
 
 ```{r}
-
+pollution %>% 
+  pivot_wider(names_from = size, values_from = amount)
 
 ```
 
+*Notice that in `pivot_wider()`, you are pulling arguments out from variables in your data. Therefore, they do not have quotations around them in the code.*
 
 ### Your Turn 9
 
 Use pivot_wider() to reorganize table2 into four columns: country, year, cases, and population.
 
 ```{r}
-table2
+table2 %>% 
+  pivot_wider(names_from = type, values_from = count)
 
 ```
 
