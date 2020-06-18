@@ -8,9 +8,9 @@ navbar:
     - text: Session 00 - Introduction
       href: introduction.html
     - text: Session 01 - Visualize Data
-      href: 
+      href: 01-Visualize.html
     - text: Session 02 - Wrangle Data
-      href: 
+      href: 02-Wrangle.html
     - text: Session 03 - Advanced Wrangling
       href: 
     - text: Session 04 - Basic Statistical Outputs
