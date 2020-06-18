@@ -40,6 +40,11 @@ output: html_document
 *  Day 1 Recap
 
 *  Session 02: Wrangle
+    *   `dplyr` functions: `filter()`, `select()`, and `mutate()`
+    *   Group-wise operations with `group_by()` and `summarize()`
+    *   Sorting data using `arrange()`
+    *   Reshaping data with `tidyr` functions: `pivot_longer()` and `pivot_wider()`
+    *   EXTRA (if there is time): working with dates and times using `lubridate`
 
 *  *Week 1 Homework*
 

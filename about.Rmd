@@ -53,3 +53,8 @@ The link to all the workshop content can be found here: [<button type="button" c
   * *The Next Step with R: Data Management, Graphics, and Functions* at the Coastal and Estuarine Research Federation (CERF) in Mobile, AL in November 2019. Materials can be found [here](https://github.com/swmpkim/2019_CERF)
   * *Integrating R into your work with RStudio and the tidyverse* at Grand Bay NERR in Grand Bay, MS in February 2020. Materials can be found [here](https://github.com/swmpkim/2020-02_GBNERR_Rworkshop)
 
+***
+
+# Images used in workshop materials
+
+  *  In several slides we have used some fabulous illustrations by Allison Horst ([<i class="fa fa-github"></i> allisonhorst](https://www.github.com/allisonhorst); [<i class="fa fa-twitter"></i>allison_horst](https://twitter.com/allison_horst)). Please check her out! 
