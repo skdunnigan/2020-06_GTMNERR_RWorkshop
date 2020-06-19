@@ -5,6 +5,7 @@ output:
     toc: true
     toc_float: true
     number_sections: true
+    code_download: true
     theme: yeti
     highlight: tango
     df_print: paged
