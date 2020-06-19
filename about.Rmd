@@ -9,6 +9,29 @@ htmltools::tagList(rmarkdown::html_dependency_font_awesome())
 
 ***
 
+
+<div class="jumbotron">
+<p>This is an [R Markdown website](http://rmarkdown.rstudio.com/rmarkdown_websites.html). 
+The source can be found on [GitHub <i class="fa fa-github"></i>](https://github.com/skdunnigan/2020-06_GTMNERR_RWorkshop).</p>
+<p>
+The link to all the workshop content can be found here: [<button type="button" class="btn btn-info">Workshop Materials</button>](https://github.com/skdunnigan/2020-06_GTMNERR_RWorkshop_Materials)</p>
+</div>
+
+***
+
+# How to prepare for the Workshop:
+
+<i class="fa fa-users"></i>
+You will have received a link to the Zoom meeting upon acceptance of registration. That link will remain the same for the duration of the workshop and we will begin promptly at 9am each morning (sans any technical issues). 
+
+We will be using [**RStudio Cloud**](https://rstudio.cloud) for this workshop and you will need to login and sign-up (if you do not have a login already) for the associated RStudio Cloud workspace.  [**Here is a video**](https://www.youtube.com/watch?v=k_W1kS10rLw&feature=emb_title) on how to sign in and register for a [free] user account with RStudio Cloud.
+Click the button below to access the workshop workspace.
+
+<p><center><a class="btn btn-warning btn" href="https://rstudio.cloud/spaces/69467/join?access_code=qxliGkr1Dgd5tu8JQ8nGoRIWI9%2BOQkWRn8yStGp1" role="button">RStudio Cloud Workspace</a>
+  </p></center>
+  
+***
+
 # Who are we?
 
 ```{r shannonimage, fig.height = 1, fig.width = 1, echo = FALSE}
@@ -38,15 +61,6 @@ knitr::include_graphics("images/kim-cressman.jpg")
 
 ***
 
-<div class="jumbotron">
-<p>This is an [R Markdown website](http://rmarkdown.rstudio.com/rmarkdown_websites.html). 
-The source can be found on [GitHub <i class="fa fa-github"></i>](https://github.com/skdunnigan/2020-06_GTMNERR_RWorkshop).</p>
-<p>
-The link to all the workshop content can be found here: [<button type="button" class="btn btn-info">Workshop Materials</button>](https://github.com/skdunnigan/2020-06_GTMNERR_RWorkshop_Materials)</p>
-</div>
-
-
-***
 
 # Previous workshops:
 
@@ -57,4 +71,5 @@ The link to all the workshop content can be found here: [<button type="button" c
 
 # Images used in workshop materials
 
-  *  In several slides we have used some fabulous illustrations by Allison Horst ([<i class="fa fa-github"></i> allisonhorst](https://www.github.com/allisonhorst); [<i class="fa fa-twitter"></i>allison_horst](https://twitter.com/allison_horst)). Please check her out! 
+In several slides we have used some fabulous illustrations by Allison Horst ([<i class="fa fa-github"></i> allisonhorst](https://www.github.com/allisonhorst); [<i class="fa fa-twitter"></i>allison_horst](https://twitter.com/allison_horst)). Please check her out! 
+  
