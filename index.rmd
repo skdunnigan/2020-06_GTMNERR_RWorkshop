@@ -35,17 +35,13 @@ Kim Cressman, Grand Bay NERR  |  <i class="fa fa-envelope"></i> Kimberly.Cressma
 
 # How to prepare for the Workshop:
 
-<i class="fa fa-users"></i>
-You will have received a link to the Zoom meeting upon acceptance of registration. That link will remain the same for the duration of the workshop and we will begin promptly at 9am each morning (sans any technical issues). 
-
-We will be using [**RStudio Cloud**](https://rstudio.cloud) for this workshop and you will need to login and sign-up (if you do not have a login already) for the associated RStudio Cloud workspace.  [**Here is a video**](https://www.youtube.com/watch?v=k_W1kS10rLw&feature=emb_title) on how to sign in and register for a [free] user account with RStudio Cloud.
-Click the button below to access the workshop workspace.
-
-<p><center><a class="btn btn-warning btn" href="https://rstudio.cloud/spaces/69467/join?access_code=qxliGkr1Dgd5tu8JQ8nGoRIWI9%2BOQkWRn8yStGp1" role="button">RStudio Cloud Workspace</a>
-  </p></center>
+(2020-06-19 Update) *Instructions for preparation have been moved to the "About" tab.*
 
 <div class="jumbotron">
-  <center><p>If you did not receive a confirmation email about your registration, be sure to email Kaitlyn Dietz, <i class="fa fa-envelope"></i> Kaitlyn.Dietz@FloridaDEP.gov </p></center>
+  <center><h2><b> Updates! (2020-06-19)</h2></b> <br>
+  <p>Week One session contents have been posted and updated both here on the website and in the Github repository for the workshop materials! <br> The link for the Github repository is quick linked below:</p></center>
+  <p><center><a class="btn btn-warning btn" href="https://github.com/skdunnigan/2020-06_IntegrateR" role="button">Full Workshop Materials Repository</a>
+  </p></center>
 </div>
 
 
