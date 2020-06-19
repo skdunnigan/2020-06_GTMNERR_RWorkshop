@@ -1,14 +1,16 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/fe751f14-bdec-4668-8d6e-d3f7c056b691/deploy-status)](https://app.netlify.com/sites/2020-06-integrate-r/deploys)
 
+
+
 # Integrating R into your work with RStudio and the `tidyverse`
 
 June 18-19, 25-26, 2020  
-Guana Tolomato Matanzas NERR
+Guana Tolomato Matanzas NERR  
 Zoom Virtual Platform
 
 ### Instructors:
 
-Shannon Dunnigan, Guana Tolomato Matanzas NERR
+Shannon Dunnigan, Guana Tolomato Matanzas NERR  
 Kim Cressman, Grand Bay NERR 
 
 ### Agenda:
