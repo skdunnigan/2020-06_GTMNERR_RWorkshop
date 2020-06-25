@@ -11,10 +11,10 @@ navbar:
       href: 01-Visualize.html
     - text: Session 02 - Wrangle Data
       href: 02-Wrangle.html
-    - text: Session 03 - Advanced Wrangling
-      href: 
+    - text: Session 03 - Advanced Wrangling - Join and Bindings
+      href: 03_Join_Bind_full.html
     - text: Session 04 - Basic Statistical Outputs
-      href:
+      href: 04_basic_stats_full.html
     - text: Session 05 - Functions
       href:
     - text: Session 06 - Loops
