@@ -25,15 +25,16 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<script src="site_libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -43,14 +44,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -59,9 +62,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  { background-color: #f8f8f8; }
+  {  background-color: #f8f8f8; }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ef2929; } /* Alert */
 code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
@@ -449,10 +452,18 @@ div.tocify {
     <li>
       <a href="02-Wrangle.html">Session 02 - Wrangle Data</a>
     </li>
-    <li class="dropdown-header">Session 03 - Advanced Wrangling</li>
-    <li class="dropdown-header">Session 04 - Basic Statistical Outputs</li>
-    <li class="dropdown-header">Session 05 - Functions</li>
-    <li class="dropdown-header">Session 06 - Loops</li>
+    <li>
+      <a href="03_Join_Bind_full.html">Session 03 - Advanced Wrangling - Join and Bindings</a>
+    </li>
+    <li>
+      <a href="04_basic_stats_full.html">Session 04 - Basic Statistical Outputs</a>
+    </li>
+    <li>
+      <a href="05_Functions_full.html">Session 05 - Functions</a>
+    </li>
+    <li>
+      <a href="06_Loops_full.html">Session 06 - Loops</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -505,11 +516,11 @@ Garret Grolemund, <cite title="Source Title">RStudio</cite>
 </footer>
 </blockquote>
 <p></right></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(tidyr)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(lubridate)</a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw">library</span>(here)</a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyr)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">library</span>(lubridate)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">library</span>(here)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(ggplot2)</span></code></pre></div>
 <p>Sometimes, the data we’re working with is not quite ready for whatever it is we want to do. We may need to summarize the data based on some group, calculate additional parameters, subset the data, or even completely reshape it. The packages <code>dplyr</code> and <code>tidyr</code> can help with these tasks!</p>
 <div id="dplyr-verbs" class="section level1">
 <h1><span class="header-section-number">1</span> dplyr verbs</h1>
@@ -522,22 +533,22 @@ Garret Grolemund, <cite title="Source Title">RStudio</cite>
 </ul>
 <p>We will use data downloaded from <a href="https://ebird.org">eBird</a> to explore these. <em>eBird is a large citizen-science driven project that provides a database of bird sightings around the world. It is collaborative and the data is freely accessbile to anyone.</em></p>
 <p>First, let’s read in the eBird data and explore it:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">ebird &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;eBird_workshop.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb2-2" title="2">dplyr<span class="op">::</span><span class="kw">glimpse</span>(ebird)   <span class="co"># 183,742 rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>ebird &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;eBird_workshop.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>dplyr<span class="op">::</span><span class="kw">glimpse</span>(ebird)   <span class="co"># 183,742 rows</span></span></code></pre></div>
 <p>We may not talk about this in the workshop, but there are (presumably accidentally) duplicate rows in this data frame. We can see them with:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">janitor<span class="op">::</span><span class="kw">get_dupes</span>(ebird)   <span class="co"># 22 duplicates = 11 that need to go</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>janitor<span class="op">::</span><span class="kw">get_dupes</span>(ebird)   <span class="co"># 22 duplicates = 11 that need to go</span></span></code></pre></div>
 <p>They are exact copies of other rows, not any data entry problems (although <code>janitor::get_dupes()</code> is very helpful in finding errors like mis-typing a site name), so we’ll just get rid of them by using <code>dplyr::distinct()</code> to keep only unique rows.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">ebird &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">distinct</span>(ebird)</a>
-<a class="sourceLine" id="cb4-2" title="2">dplyr<span class="op">::</span><span class="kw">glimpse</span>(ebird)   <span class="co"># 183,731 rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>ebird &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">distinct</span>(ebird)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>dplyr<span class="op">::</span><span class="kw">glimpse</span>(ebird)   <span class="co"># 183,731 rows</span></span></code></pre></div>
 <div id="choose-rows-filter" class="section level2">
 <h2><span class="header-section-number">1.1</span> Choose <em>rows</em>: <code>filter()</code></h2>
 <p>This data set has a lot of rows. We might only be interested in observations about a single bird species, or from a single state, which means we want to choose <em>rows</em>. To do this, we use the verb <code>filter()</code>. The data argument comes first, then the condition.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">filter</span>(ebird, state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">filter</span>(ebird, state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>)</span></code></pre></div>
 <p>Alternately, we can use the pipe, which feeds the data frame resulting from everything before it into whatever is next (read it as “and then….”)<br />
 We can also pipe to glimpse to explore it a little more.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">glimpse</span>()</span></code></pre></div>
 <p>Notice a couple things here:</p>
 <ul>
 <li>We use <code>==</code> to specify an exact condition. If we were working with numbers, we could use:
@@ -559,44 +570,44 @@ We can also pipe to glimpse to explore it a little more.</p>
 </ul>
 <p><strong>How about for multiple conditions?</strong></p>
 <p>We can filter based on more than one criterion, e.g. if we want all birds from Alaska, but only in the year 2008:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-2" title="2"><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>,</a>
-<a class="sourceLine" id="cb7-3" title="3">           year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-4" title="4"><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="st">    </span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>           year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="kw">head</span>()</span></code></pre></div>
 <p><strong>Note</strong>: It doesn’t matter if you select <code>state</code> or <code>year</code> first - you can do either.</p>
 <p><strong>Note</strong>: if you actually need to work with the data frame later, you may consider saving these steps as new data frames!</p>
 <p><strong>What if we want to look at birds from more than one state?</strong></p>
 <p>There are a few ways to do this.</p>
 <p>Perhaps the easiest is to make a vector of the states you’re interested in:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">my_states &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AK&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>my_states &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AK&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)</span></code></pre></div>
 <p>And then use <code>%in%</code> in the filter statement, to say, e.g. “any of the states <em>in</em> this vector”:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">ebird_mystates &lt;-<span class="st"> </span>ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-2" title="2"><span class="st">    </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>,</a>
-<a class="sourceLine" id="cb9-3" title="3">           state <span class="op">%in%</span><span class="st"> </span>my_states) </a>
-<a class="sourceLine" id="cb9-4" title="4"><span class="kw">head</span>(ebird_mystates)</a>
-<a class="sourceLine" id="cb9-5" title="5"></a>
-<a class="sourceLine" id="cb9-6" title="6"><span class="co"># make sure the states we named, and only the states we named, are represented:</span></a>
-<a class="sourceLine" id="cb9-7" title="7"><span class="kw">unique</span>(ebird_mystates<span class="op">$</span>state)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>ebird_mystates &lt;-<span class="st"> </span>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="st">    </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>           state <span class="op">%in%</span><span class="st"> </span>my_states) </span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="kw">head</span>(ebird_mystates)</span>
+<span id="cb9-5"><a href="#cb9-5"></a></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># make sure the states we named, and only the states we named, are represented:</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="kw">unique</span>(ebird_mystates<span class="op">$</span>state)</span></code></pre></div>
 <p>You could also skip the step of naming the vector separately:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="st">    </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>,</a>
-<a class="sourceLine" id="cb10-3" title="3">           state <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AK&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb10-4" title="4"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="st">    </span><span class="kw">filter</span>(year <span class="op">==</span><span class="st"> </span><span class="dv">2008</span>,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>           state <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AK&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="st">    </span><span class="kw">head</span>()</span></code></pre></div>
 <div id="your-turn-1" class="section level3">
 <h3><span class="header-section-number">1.1.1</span> Your Turn 1</h3>
 <p>How could we pull out birds in Alaska (AK), before 2010? (Hint: you can use the same symbols on year that you would use with any other numbers)</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>,</a>
-<a class="sourceLine" id="cb11-3" title="3">                year <span class="op">&lt;</span><span class="st"> </span><span class="dv">2010</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(state <span class="op">==</span><span class="st"> &quot;AK&quot;</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>                year <span class="op">&lt;</span><span class="st"> </span><span class="dv">2010</span>)</span></code></pre></div>
 <p>How would you filter the data to contain only the species “American Coot” from MS and FL (your instructors’ states), in all years <em>except</em> 2010? Assign this object to a data frame and verify (using <code>unique()</code>) that you did it right.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">yt1 &lt;-<span class="st"> </span>ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb12-2" title="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(species <span class="op">==</span><span class="st"> &quot;American Coot&quot;</span>,</a>
-<a class="sourceLine" id="cb12-3" title="3">                state <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;MS&quot;</span>, <span class="st">&quot;FL&quot;</span>),</a>
-<a class="sourceLine" id="cb12-4" title="4">                year <span class="op">!=</span><span class="st"> </span><span class="dv">2010</span>)</a>
-<a class="sourceLine" id="cb12-5" title="5"></a>
-<a class="sourceLine" id="cb12-6" title="6"><span class="kw">unique</span>(yt1<span class="op">$</span>species)</a>
-<a class="sourceLine" id="cb12-7" title="7"><span class="kw">unique</span>(yt1<span class="op">$</span>state)</a>
-<a class="sourceLine" id="cb12-8" title="8"><span class="kw">unique</span>(yt1<span class="op">$</span>year)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>yt1 &lt;-<span class="st"> </span>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(species <span class="op">==</span><span class="st"> &quot;American Coot&quot;</span>,</span>
+<span id="cb12-3"><a href="#cb12-3"></a>                state <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;MS&quot;</span>, <span class="st">&quot;FL&quot;</span>),</span>
+<span id="cb12-4"><a href="#cb12-4"></a>                year <span class="op">!=</span><span class="st"> </span><span class="dv">2010</span>)</span>
+<span id="cb12-5"><a href="#cb12-5"></a></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="kw">unique</span>(yt1<span class="op">$</span>species)</span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="kw">unique</span>(yt1<span class="op">$</span>state)</span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="kw">unique</span>(yt1<span class="op">$</span>year)</span></code></pre></div>
 <hr />
 </div>
 </div>
@@ -605,50 +616,50 @@ We can also pipe to glimpse to explore it a little more.</p>
 <p>When you’re working with a lot of data, you may not want or need to keep all the columns you started with. In this case, <code>select()</code> is what you need.</p>
 <p>The ebird data frame doesn’t have too many columns, but that makes it easy to see exactly what we’re doing! Let’s pretend we only want to keep species, state, and year. We can do this two ways:</p>
 <p>First, by selecting the columns we <strong>do</strong> want to keep:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="st">    </span><span class="kw">select</span>(species, state, year) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb13-3" title="3"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="st">    </span><span class="kw">select</span>(species, state, year) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="st">    </span><span class="kw">head</span>()</span></code></pre></div>
 <p>Or second, by using a <code>-</code> in front of the columns we <strong>don’t</strong> want to keep:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>samplesize, <span class="op">-</span>presence) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-3" title="3"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>samplesize, <span class="op">-</span>presence) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="st">    </span><span class="kw">head</span>()</span></code></pre></div>
 <p>Either of these can be really handy depending on what your original data frame looks like and what you’re trying to do!</p>
 <p>Order <strong>does</strong> matter in <code>select()</code>; remember it didn’t matter in <code>filter()</code>. In <code>select()</code>, selections are made in the order specified - so if you want to rearrange the columns of your data, you can do it with this command!</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-2" title="2"><span class="st">    </span><span class="kw">select</span>(year, state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="st">    </span><span class="kw">select</span>(year, state, species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="st">    </span><span class="kw">head</span>()</span></code></pre></div>
 <p>You can also move just one or a few columns to the beginning by specifying it/them, and then <code>everything()</code> - it keeps all other columns, in their original order:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-2" title="2"><span class="st">    </span><span class="kw">select</span>(year, <span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-3" title="3"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="st">    </span><span class="kw">select</span>(year, <span class="kw">everything</span>()) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="st">    </span><span class="kw">glimpse</span>()</span></code></pre></div>
 <div id="aside---helper-functions" class="section level3">
 <h3><span class="header-section-number">1.2.1</span> Aside - helper functions</h3>
 <p>Sometimes you have a lot of columns that start with the same prefix, or that end with the same appended matter; maybe you want to keep all of them (or get rid of all of them). In these situations, you can use the helper functions <code>starts_with()</code> and <code>ends_with()</code>. See the <code>dplyr</code> cheatsheet for other possible helper functions.</p>
 <p>In our little example, let’s keep columns whose names start with ‘s’:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">&quot;s&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb17-3" title="3"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="st">    </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">&quot;s&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="st">    </span><span class="kw">glimpse</span>()</span></code></pre></div>
 <p>Or columns that end with ‘e’:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="kw">ends_with</span>(<span class="st">&quot;e&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb18-3" title="3"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="st">    </span><span class="kw">select</span>(<span class="kw">ends_with</span>(<span class="st">&quot;e&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="st">    </span><span class="kw">glimpse</span>()</span></code></pre></div>
 <p><em>Check out the data wrangling cheat sheet for more helper functions.</em></p>
 </div>
 <div id="your-turn-2" class="section level3">
 <h3><span class="header-section-number">1.2.2</span> Your Turn 2</h3>
 <p>From the ebird data, subset to only include the species American Coot, from the states FL, AL, and MS. Keep only the state, year, and presence columns. What is the proper order of operations in this case?</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-2" title="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(species <span class="op">==</span><span class="st"> &quot;American Coot&quot;</span>,</a>
-<a class="sourceLine" id="cb19-3" title="3">                state <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;FL&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-4" title="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(state, year, presence) </a>
-<a class="sourceLine" id="cb19-5" title="5"></a>
-<a class="sourceLine" id="cb19-6" title="6"><span class="co"># select second because you need species and state in order to filter!</span></a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">filter</span>(species <span class="op">==</span><span class="st"> &quot;American Coot&quot;</span>,</span>
+<span id="cb19-3"><a href="#cb19-3"></a>                state <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;FL&quot;</span>, <span class="st">&quot;AL&quot;</span>, <span class="st">&quot;MS&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(state, year, presence) </span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co"># select second because you need species and state in order to filter!</span></span></code></pre></div>
 <hr />
 <p><em>Setup for the next bit of the workshop</em></p>
 <p>We’re going to switch datasets here, to one that’s a little more complicated: water quality data! We downloaded monitoring data from several National Estuarine Research Reserves for the year 2016, and have already winnowed it down a bit to daily averages of several parameters that we measure.</p>
 <p>We will use your newfound <code>select()</code> and <code>filter()</code> skills to make it an even smaller data frame, and then we’ll learn how to calculate new columns and do group-wise summaries.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1">wq &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;daily_wq.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb20-2" title="2"><span class="kw">glimpse</span>(wq)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>wq &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;daily_wq.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="kw">glimpse</span>(wq)</span></code></pre></div>
 <hr />
 </div>
 <div id="your-turn-3" class="section level3">
@@ -664,36 +675,36 @@ We can also pipe to glimpse to explore it a little more.</p>
 <div id="your-turn-3-answer" class="section level3">
 <h3><span class="header-section-number">1.2.4</span> Your Turn 3 answer</h3>
 <p>Last chance to try it yourself…. but if you didn’t get it to work, run this chunk:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">wq_trimmed &lt;-<span class="st"> </span>wq <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-2" title="2"><span class="st">    </span><span class="kw">select</span>(station_code, month, day, temp, sal, do_pct, depth) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb21-3" title="3"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(depth))</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>wq_trimmed &lt;-<span class="st"> </span>wq <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="st">    </span><span class="kw">select</span>(station_code, month, day, temp, sal, do_pct, depth) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(depth))</span></code></pre></div>
 <p>How much has been removed from the data frame?</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="kw">dim</span>(wq)</a>
-<a class="sourceLine" id="cb22-2" title="2"><span class="kw">dim</span>(wq_trimmed)</a>
-<a class="sourceLine" id="cb22-3" title="3"></a>
-<a class="sourceLine" id="cb22-4" title="4"><span class="co"># can subtract both rows and columns at once!</span></a>
-<a class="sourceLine" id="cb22-5" title="5"><span class="kw">dim</span>(wq) <span class="op">-</span><span class="st"> </span><span class="kw">dim</span>(wq_trimmed)</a>
-<a class="sourceLine" id="cb22-6" title="6"></a>
-<a class="sourceLine" id="cb22-7" title="7"><span class="co"># why did all those rows go away?</span></a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="kw">dim</span>(wq)</span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="kw">dim</span>(wq_trimmed)</span>
+<span id="cb22-3"><a href="#cb22-3"></a></span>
+<span id="cb22-4"><a href="#cb22-4"></a><span class="co"># can subtract both rows and columns at once!</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="kw">dim</span>(wq) <span class="op">-</span><span class="st"> </span><span class="kw">dim</span>(wq_trimmed)</span>
+<span id="cb22-6"><a href="#cb22-6"></a></span>
+<span id="cb22-7"><a href="#cb22-7"></a><span class="co"># why did all those rows go away?</span></span></code></pre></div>
 <p>Some SWMP stations report <code>depth</code>, which is water depth above the data logger; and others report <code>level</code>, which is water surface relative to a standard datum (NAVD88). There is an important distinction that’s irrelevant for what we want to cover today, so here we have only kept the stations that report <code>depth</code>.</p>
 </div>
 </div>
 <div id="modifying-data-frames-with-mutate" class="section level2">
 <h2><span class="header-section-number">1.3</span> Modifying data frames with <code>mutate()</code></h2>
 <p>It’s easy to make a new variable out of other variables in the data frame using <code>mutate()</code>. This operates on rows. Say we want to talk about water depth (or make a graph!) to the public - we might want to change the units from meters to feet. That’s simple multiplication! So here, we’ll add a column to the data frame.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb23-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">depth_ft =</span> depth <span class="op">*</span><span class="st"> </span><span class="fl">3.28</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-3" title="3"><span class="st">  </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">depth_ft =</span> depth <span class="op">*</span><span class="st"> </span><span class="fl">3.28</span>) <span class="op">%&gt;%</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="st">  </span><span class="kw">head</span>()</span></code></pre></div>
 <p>You can also use other columns. You can use them in mathematical expressions, or just combine them:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb24-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">monthday =</span> <span class="kw">paste</span>(month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),  <span class="co"># see ?paste for more info</span></a>
-<a class="sourceLine" id="cb24-3" title="3">           <span class="dt">meaningless_thing =</span> sal <span class="op">+</span><span class="st"> </span>temp) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb24-4" title="4"><span class="st">    </span><span class="kw">head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">monthday =</span> <span class="kw">paste</span>(month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),  <span class="co"># see ?paste for more info</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>           <span class="dt">meaningless_thing =</span> sal <span class="op">+</span><span class="st"> </span>temp) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="st">    </span><span class="kw">head</span>()</span></code></pre></div>
 <p>You can even use a column immediately after creating it!</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1">wq_trimmed &lt;-<span class="st"> </span>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">monthday =</span> <span class="kw">paste</span>(month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),</a>
-<a class="sourceLine" id="cb25-3" title="3">           <span class="dt">meaningless_thing =</span> sal <span class="op">+</span><span class="st"> </span>temp,</a>
-<a class="sourceLine" id="cb25-4" title="4">           <span class="dt">even_more_meaningless_thing =</span> meaningless_thing <span class="op">+</span><span class="st"> </span><span class="dv">5</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>wq_trimmed &lt;-<span class="st"> </span>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb25-2"><a href="#cb25-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">monthday =</span> <span class="kw">paste</span>(month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),</span>
+<span id="cb25-3"><a href="#cb25-3"></a>           <span class="dt">meaningless_thing =</span> sal <span class="op">+</span><span class="st"> </span>temp,</span>
+<span id="cb25-4"><a href="#cb25-4"></a>           <span class="dt">even_more_meaningless_thing =</span> meaningless_thing <span class="op">+</span><span class="st"> </span><span class="dv">5</span>) </span></code></pre></div>
 <div id="your-turn-4" class="section level3">
 <h3><span class="header-section-number">1.3.1</span> Your Turn 4</h3>
 <p>There are two parts to this. You can approach them separately or within the same series of pipes. Remember to save the result as the new, better, <code>wq_trimmed</code> data frame!</p>
@@ -706,40 +717,40 @@ We can also pipe to glimpse to explore it a little more.</p>
 </div>
 <div id="your-turn-4-answer" class="section level3">
 <h3><span class="header-section-number">1.3.2</span> Your Turn 4 answer</h3>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">wq_trimmed &lt;-<span class="st"> </span>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb26-2" title="2"><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>monthday, <span class="op">-</span>meaningless_thing) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb26-3" title="3"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">temp_f =</span> (<span class="dv">9</span><span class="op">/</span><span class="dv">5</span>) <span class="op">*</span><span class="st"> </span>temp <span class="op">+</span><span class="st"> </span><span class="dv">32</span>)</a>
-<a class="sourceLine" id="cb26-4" title="4"><span class="kw">View</span>(wq_trimmed)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>wq_trimmed &lt;-<span class="st"> </span>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>monthday, <span class="op">-</span>meaningless_thing) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">temp_f =</span> (<span class="dv">9</span><span class="op">/</span><span class="dv">5</span>) <span class="op">*</span><span class="st"> </span>temp <span class="op">+</span><span class="st"> </span><span class="dv">32</span>)</span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="kw">View</span>(wq_trimmed)</span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="group-wise-operations-with-group_by-and-summarize" class="section level1">
 <h1><span class="header-section-number">2</span> Group-wise operations with <code>group_by()</code> and <code>summarize()</code></h1>
 <p>Say we want to find out how many birds were seen by state in the ebird dataset. We can do that. These operations are also great for lumping data into daily, monthly, or yearly averages, which we’ll do on the SWMP dataset.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb27-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb27-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb27-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb27-5" title="5"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="st">    </span><span class="kw">group_by</span>(state) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb27-4"><a href="#cb27-4"></a>              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 <p>We can also group by combinations of multiple variables:</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb28-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb28-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb28-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb28-5" title="5"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb28-4"><a href="#cb28-4"></a>              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 <div id="your-turn-5" class="section level3">
 <h3><span class="header-section-number">2.0.1</span> Your Turn 5</h3>
 <p>How would you group the <code>wq_trimmed</code> dataset to calculate monthly average temperature and salinity, and their standard deviations, at each station?</p>
 </div>
 <div id="your-turn-5-answer" class="section level3">
 <h3><span class="header-section-number">2.0.2</span> Your Turn 5 answer</h3>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_temp =</span> <span class="kw">mean</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb29-4" title="4">              <span class="dt">sd_temp =</span> <span class="kw">sd</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb29-5" title="5">              <span class="dt">mean_sal =</span> <span class="kw">mean</span>(sal, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb29-6" title="6">              <span class="dt">sd_sal =</span> <span class="kw">sd</span>(sal, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb29-7" title="7"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb29-3"><a href="#cb29-3"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_temp =</span> <span class="kw">mean</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb29-4"><a href="#cb29-4"></a>              <span class="dt">sd_temp =</span> <span class="kw">sd</span>(temp, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb29-5"><a href="#cb29-5"></a>              <span class="dt">mean_sal =</span> <span class="kw">mean</span>(sal, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb29-6"><a href="#cb29-6"></a>              <span class="dt">sd_sal =</span> <span class="kw">sd</span>(sal, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb29-7"><a href="#cb29-7"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 </div>
 <div id="aside---more-summarize-options" class="section level3">
 <h3><span class="header-section-number">2.0.3</span> Aside - more summarize options</h3>
@@ -747,56 +758,56 @@ We can also pipe to glimpse to explore it a little more.</p>
 <div id="summarize_all" class="section level4">
 <h4><span class="header-section-number">2.0.3.1</span> <code>summarize_all()</code></h4>
 <p>Applies a function to all of the non-grouping variables! (Even “day”, which isn’t meaningful, but that’s okay)</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb30-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb30-3" title="3"><span class="st">    </span><span class="kw">summarize_all</span>(mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb30-4" title="4"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="st">    </span><span class="kw">summarize_all</span>(mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 </div>
 <div id="summarize_at" class="section level4">
 <h4><span class="header-section-number">2.0.3.2</span> <code>summarize_at()</code></h4>
 <p>To choose which variables to summarize</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb31-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb31-3" title="3"><span class="st">    </span><span class="kw">summarize_at</span>(<span class="kw">c</span>(<span class="st">&quot;temp&quot;</span>, <span class="st">&quot;sal&quot;</span>), mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb31-4" title="4"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb31-3"><a href="#cb31-3"></a><span class="st">    </span><span class="kw">summarize_at</span>(<span class="kw">c</span>(<span class="st">&quot;temp&quot;</span>, <span class="st">&quot;sal&quot;</span>), mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb31-4"><a href="#cb31-4"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="sort" class="section level1">
 <h1><span class="header-section-number">3</span> Sort</h1>
 <p>You can also sort your data frame (or its summary) using <code>arrange()</code>. Let’s put our ebird summary in order by species, then state:</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb32-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb32-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb32-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb32-5" title="5"><span class="st">    </span><span class="kw">arrange</span>(species, state) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb32-6" title="6"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb32-4"><a href="#cb32-4"></a>              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-5"><a href="#cb32-5"></a><span class="st">    </span><span class="kw">arrange</span>(species, state) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb32-6"><a href="#cb32-6"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 <p>Or put it in order by <code>max_presence</code>:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb33-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb33-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb33-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb33-5" title="5"><span class="st">    </span><span class="kw">arrange</span>(max_presence) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb33-6" title="6"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-2"><a href="#cb33-2"></a><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-3"><a href="#cb33-3"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb33-4"><a href="#cb33-4"></a>              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-5"><a href="#cb33-5"></a><span class="st">    </span><span class="kw">arrange</span>(max_presence) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb33-6"><a href="#cb33-6"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 <p>If you want the highest number at the top instead, use <code>desc()</code>:</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">ebird <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb34-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb34-3" title="3"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</a>
-<a class="sourceLine" id="cb34-4" title="4">              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb34-5" title="5"><span class="st">    </span><span class="kw">arrange</span>(<span class="kw">desc</span>(max_presence)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb34-6" title="6"><span class="st">    </span><span class="kw">View</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>ebird <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-2"><a href="#cb34-2"></a><span class="st">    </span><span class="kw">group_by</span>(state, species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">mean_presence =</span> <span class="kw">mean</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb34-4"><a href="#cb34-4"></a>              <span class="dt">max_presence =</span> <span class="kw">max</span>(presence, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-5"><a href="#cb34-5"></a><span class="st">    </span><span class="kw">arrange</span>(<span class="kw">desc</span>(max_presence)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb34-6"><a href="#cb34-6"></a><span class="st">    </span><span class="kw">View</span>()</span></code></pre></div>
 <div id="your-turn-6" class="section level3">
 <h3><span class="header-section-number">3.0.1</span> Your Turn 6</h3>
 <p>Use the <code>wq_trimmed</code> data frame. Calculate monthly average temp, sal, and do_pct (at least - more variables if you like) <em>for each station</em>. Make a scatterplot using any two of these variables. Use what you’ve learned about <code>ggplot2</code>’s options to adjust the look and feel of the graph. Is the relationship what you expected it to be? Does it vary by site?</p>
 <p>Here’s one possible way to go about it. You could also make a new data frame of the summary variables, and use that in a separate call to <code>ggplot</code>.</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb35-2" title="2"><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb35-3" title="3"><span class="st">    </span><span class="kw">summarize_all</span>(mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb35-4" title="4"><span class="st">    </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb35-5" title="5"><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sal, <span class="dt">y =</span> do_pct, <span class="dt">col =</span> station_code), </a>
-<a class="sourceLine" id="cb35-6" title="6">               <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb35-7" title="7"><span class="st">    </span><span class="kw">theme_minimal</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb35-8" title="8"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>station_code)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="st">    </span><span class="kw">group_by</span>(station_code, month) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-3"><a href="#cb35-3"></a><span class="st">    </span><span class="kw">summarize_all</span>(mean, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb35-4"><a href="#cb35-4"></a><span class="st">    </span><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb35-5"><a href="#cb35-5"></a><span class="st">    </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> sal, <span class="dt">y =</span> do_pct, <span class="dt">col =</span> station_code), </span>
+<span id="cb35-6"><a href="#cb35-6"></a>               <span class="dt">size =</span> <span class="dv">3</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb35-7"><a href="#cb35-7"></a><span class="st">    </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb35-8"><a href="#cb35-8"></a><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>station_code)</span></code></pre></div>
 </div>
 </div>
 <div id="reshaping-data-with-tidyr" class="section level1">
@@ -812,39 +823,39 @@ Hadley Wickham, <cite title="Source Title">RStudio</cite>
 </blockquote>
 <p></right></p>
 <p>Run the chunk below to “reset” each of the tester data frames</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" title="1"><span class="co"># load and clean up some data files we&#39;ve already been working with</span></a>
-<a class="sourceLine" id="cb36-2" title="2">ebird &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;eBird_workshop.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb36-3" title="3">ebird &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">distinct</span>(ebird)</a>
-<a class="sourceLine" id="cb36-4" title="4"></a>
-<a class="sourceLine" id="cb36-5" title="5">wq &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;daily_wq.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb36-6" title="6">wq_trimmed &lt;-<span class="st"> </span>wq <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-7" title="7"><span class="st">    </span><span class="kw">select</span>(station_code, month, day, temp, sal, do_pct, depth) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-8" title="8"><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(depth)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-9" title="9"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">depth_ft =</span> depth <span class="op">*</span><span class="st"> </span><span class="fl">3.28</span>,</a>
-<a class="sourceLine" id="cb36-10" title="10">           <span class="dt">temp_f =</span> (<span class="dv">9</span><span class="op">/</span><span class="dv">5</span>) <span class="op">*</span><span class="st"> </span>temp <span class="op">+</span><span class="st"> </span><span class="dv">32</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="co"># load and clean up some data files we&#39;ve already been working with</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>ebird &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;eBird_workshop.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb36-3"><a href="#cb36-3"></a>ebird &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">distinct</span>(ebird)</span>
+<span id="cb36-4"><a href="#cb36-4"></a></span>
+<span id="cb36-5"><a href="#cb36-5"></a>wq &lt;-<span class="st"> </span><span class="kw">read.csv</span>(here<span class="op">::</span><span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;daily_wq.csv&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb36-6"><a href="#cb36-6"></a>wq_trimmed &lt;-<span class="st"> </span>wq <span class="op">%&gt;%</span></span>
+<span id="cb36-7"><a href="#cb36-7"></a><span class="st">    </span><span class="kw">select</span>(station_code, month, day, temp, sal, do_pct, depth) <span class="op">%&gt;%</span></span>
+<span id="cb36-8"><a href="#cb36-8"></a><span class="st">    </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(depth)) <span class="op">%&gt;%</span></span>
+<span id="cb36-9"><a href="#cb36-9"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">depth_ft =</span> depth <span class="op">*</span><span class="st"> </span><span class="fl">3.28</span>,</span>
+<span id="cb36-10"><a href="#cb36-10"></a>           <span class="dt">temp_f =</span> (<span class="dv">9</span><span class="op">/</span><span class="dv">5</span>) <span class="op">*</span><span class="st"> </span>temp <span class="op">+</span><span class="st"> </span><span class="dv">32</span>)</span></code></pre></div>
 <div id="example-data" class="section level2">
 <h2><span class="header-section-number">4.1</span> Example data</h2>
 <p>tables 1, 2, 3, 4a, 4b, and 5 are all built-in datasets in R. They are different ways of representing the same data and are subsets from World Health Organization Tuberculosis data between 1999-2000.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1">table1</a>
-<a class="sourceLine" id="cb37-2" title="2"></a>
-<a class="sourceLine" id="cb37-3" title="3">table2</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>table1</span>
+<span id="cb37-2"><a href="#cb37-2"></a></span>
+<span id="cb37-3"><a href="#cb37-3"></a>table2</span></code></pre></div>
 <p>Generate “toy data” to follow along with the slides</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1">cases &lt;-<span class="st"> </span><span class="kw">tribble</span>(</a>
-<a class="sourceLine" id="cb38-2" title="2">    <span class="op">~</span>Country, <span class="op">~</span><span class="st">&quot;2011&quot;</span>, <span class="op">~</span><span class="st">&quot;2012&quot;</span>, <span class="op">~</span><span class="st">&quot;2013&quot;</span>,</a>
-<a class="sourceLine" id="cb38-3" title="3">    <span class="st">&quot;FR&quot;</span>,    <span class="dv">7000</span>,    <span class="dv">6900</span>,    <span class="dv">7000</span>,</a>
-<a class="sourceLine" id="cb38-4" title="4">    <span class="st">&quot;DE&quot;</span>,    <span class="dv">5800</span>,    <span class="dv">6000</span>,    <span class="dv">6200</span>,</a>
-<a class="sourceLine" id="cb38-5" title="5">    <span class="st">&quot;US&quot;</span>,   <span class="dv">15000</span>,   <span class="dv">14000</span>,   <span class="dv">13000</span></a>
-<a class="sourceLine" id="cb38-6" title="6">)</a>
-<a class="sourceLine" id="cb38-7" title="7"></a>
-<a class="sourceLine" id="cb38-8" title="8">pollution &lt;-<span class="st"> </span><span class="kw">tribble</span>(</a>
-<a class="sourceLine" id="cb38-9" title="9">    <span class="op">~</span>city, <span class="op">~</span>size, <span class="op">~</span>amount,</a>
-<a class="sourceLine" id="cb38-10" title="10">    <span class="st">&quot;New York&quot;</span>, <span class="st">&quot;large&quot;</span>,      <span class="dv">23</span>,</a>
-<a class="sourceLine" id="cb38-11" title="11">    <span class="st">&quot;New York&quot;</span>, <span class="st">&quot;small&quot;</span>,      <span class="dv">14</span>,</a>
-<a class="sourceLine" id="cb38-12" title="12">    <span class="st">&quot;London&quot;</span>, <span class="st">&quot;large&quot;</span>,      <span class="dv">22</span>,</a>
-<a class="sourceLine" id="cb38-13" title="13">    <span class="st">&quot;London&quot;</span>, <span class="st">&quot;small&quot;</span>,      <span class="dv">16</span>,</a>
-<a class="sourceLine" id="cb38-14" title="14">    <span class="st">&quot;Beijing&quot;</span>, <span class="st">&quot;large&quot;</span>,     <span class="dv">121</span>,</a>
-<a class="sourceLine" id="cb38-15" title="15">    <span class="st">&quot;Beijing&quot;</span>, <span class="st">&quot;small&quot;</span>,     <span class="dv">121</span></a>
-<a class="sourceLine" id="cb38-16" title="16">)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>cases &lt;-<span class="st"> </span><span class="kw">tribble</span>(</span>
+<span id="cb38-2"><a href="#cb38-2"></a>    <span class="op">~</span>Country, <span class="op">~</span><span class="st">&quot;2011&quot;</span>, <span class="op">~</span><span class="st">&quot;2012&quot;</span>, <span class="op">~</span><span class="st">&quot;2013&quot;</span>,</span>
+<span id="cb38-3"><a href="#cb38-3"></a>    <span class="st">&quot;FR&quot;</span>,    <span class="dv">7000</span>,    <span class="dv">6900</span>,    <span class="dv">7000</span>,</span>
+<span id="cb38-4"><a href="#cb38-4"></a>    <span class="st">&quot;DE&quot;</span>,    <span class="dv">5800</span>,    <span class="dv">6000</span>,    <span class="dv">6200</span>,</span>
+<span id="cb38-5"><a href="#cb38-5"></a>    <span class="st">&quot;US&quot;</span>,   <span class="dv">15000</span>,   <span class="dv">14000</span>,   <span class="dv">13000</span></span>
+<span id="cb38-6"><a href="#cb38-6"></a>)</span>
+<span id="cb38-7"><a href="#cb38-7"></a></span>
+<span id="cb38-8"><a href="#cb38-8"></a>pollution &lt;-<span class="st"> </span><span class="kw">tribble</span>(</span>
+<span id="cb38-9"><a href="#cb38-9"></a>    <span class="op">~</span>city, <span class="op">~</span>size, <span class="op">~</span>amount,</span>
+<span id="cb38-10"><a href="#cb38-10"></a>    <span class="st">&quot;New York&quot;</span>, <span class="st">&quot;large&quot;</span>,      <span class="dv">23</span>,</span>
+<span id="cb38-11"><a href="#cb38-11"></a>    <span class="st">&quot;New York&quot;</span>, <span class="st">&quot;small&quot;</span>,      <span class="dv">14</span>,</span>
+<span id="cb38-12"><a href="#cb38-12"></a>    <span class="st">&quot;London&quot;</span>, <span class="st">&quot;large&quot;</span>,      <span class="dv">22</span>,</span>
+<span id="cb38-13"><a href="#cb38-13"></a>    <span class="st">&quot;London&quot;</span>, <span class="st">&quot;small&quot;</span>,      <span class="dv">16</span>,</span>
+<span id="cb38-14"><a href="#cb38-14"></a>    <span class="st">&quot;Beijing&quot;</span>, <span class="st">&quot;large&quot;</span>,     <span class="dv">121</span>,</span>
+<span id="cb38-15"><a href="#cb38-15"></a>    <span class="st">&quot;Beijing&quot;</span>, <span class="st">&quot;small&quot;</span>,     <span class="dv">121</span></span>
+<span id="cb38-16"><a href="#cb38-16"></a>)</span></code></pre></div>
 <div id="your-turn-7" class="section level3">
 <h3><span class="header-section-number">4.1.1</span> Your Turn 7</h3>
 <p><em>not code</em> On a sheet of paper, draw how the cases data set would look if it had the same values grouped into three columns: country, year, n</p>
@@ -858,28 +869,28 @@ Hadley Wickham, <cite title="Source Title">RStudio</cite>
 <li>names_to: name of the new key columns (a character string)</li>
 <li>values_to: name of the new value column (a character string)</li>
 </ul>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1"><span class="co"># the column identifiers can be in a variety of ways:</span></a>
-<a class="sourceLine" id="cb39-2" title="2"></a>
-<a class="sourceLine" id="cb39-3" title="3"><span class="co"># using the numeric indices of the specific columns</span></a>
-<a class="sourceLine" id="cb39-4" title="4">cases <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb39-5" title="5"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</a>
-<a class="sourceLine" id="cb39-6" title="6"></a>
-<a class="sourceLine" id="cb39-7" title="7"><span class="co"># using the column names</span></a>
-<a class="sourceLine" id="cb39-8" title="8">cases <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb39-9" title="9"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">c</span>(<span class="st">&quot;2011&quot;</span>, <span class="st">&quot;2012&quot;</span>, <span class="st">&quot;2013&quot;</span>), <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</a>
-<a class="sourceLine" id="cb39-10" title="10"></a>
-<a class="sourceLine" id="cb39-11" title="11"><span class="co"># or &quot;everything except...&quot;</span></a>
-<a class="sourceLine" id="cb39-12" title="12">cases <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb39-13" title="13"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>Country, <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</a>
-<a class="sourceLine" id="cb39-14" title="14"></a>
-<a class="sourceLine" id="cb39-15" title="15"><span class="co"># or even helper functions like &#39;starts_with...&#39;</span></a>
-<a class="sourceLine" id="cb39-16" title="16">cases <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb39-17" title="17"><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&quot;201&quot;</span>), <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co"># the column identifiers can be in a variety of ways:</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a></span>
+<span id="cb39-3"><a href="#cb39-3"></a><span class="co"># using the numeric indices of the specific columns</span></span>
+<span id="cb39-4"><a href="#cb39-4"></a>cases <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-5"><a href="#cb39-5"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb39-6"><a href="#cb39-6"></a></span>
+<span id="cb39-7"><a href="#cb39-7"></a><span class="co"># using the column names</span></span>
+<span id="cb39-8"><a href="#cb39-8"></a>cases <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-9"><a href="#cb39-9"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">c</span>(<span class="st">&quot;2011&quot;</span>, <span class="st">&quot;2012&quot;</span>, <span class="st">&quot;2013&quot;</span>), <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb39-10"><a href="#cb39-10"></a></span>
+<span id="cb39-11"><a href="#cb39-11"></a><span class="co"># or &quot;everything except...&quot;</span></span>
+<span id="cb39-12"><a href="#cb39-12"></a>cases <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-13"><a href="#cb39-13"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="op">-</span>Country, <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb39-14"><a href="#cb39-14"></a></span>
+<span id="cb39-15"><a href="#cb39-15"></a><span class="co"># or even helper functions like &#39;starts_with...&#39;</span></span>
+<span id="cb39-16"><a href="#cb39-16"></a>cases <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb39-17"><a href="#cb39-17"></a><span class="st">  </span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="kw">starts_with</span>(<span class="st">&quot;201&quot;</span>), <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
 <div id="your-turn-8" class="section level3">
 <h3><span class="header-section-number">4.2.1</span> Your Turn 8</h3>
 <p>Use <code>pivot_longer()</code> to reorganize <code>table4a</code> into three columns: country, year, and cases.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1">table4a <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb40-2" title="2"><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>table4a <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb40-2"><a href="#cb40-2"></a><span class="st">  </span>tidyr<span class="op">::</span><span class="kw">pivot_longer</span>(<span class="dt">cols =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>, <span class="dt">names_to =</span> <span class="st">&quot;year&quot;</span>, <span class="dt">values_to =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="pivoting-data-from-long-to-wide-using-pivot_wider" class="section level2">
@@ -889,14 +900,14 @@ Hadley Wickham, <cite title="Source Title">RStudio</cite>
 <li>names_from: column to use for keys (becomes new variable column names)</li>
 <li>values_from: column to use for values (becomes new column cells)</li>
 </ul>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1">pollution <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb41-2" title="2"><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> size, <span class="dt">values_from =</span> amount)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>pollution <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb41-2"><a href="#cb41-2"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> size, <span class="dt">values_from =</span> amount)</span></code></pre></div>
 <p><em>Notice that in <code>pivot_wider()</code>, you are pulling arguments out from variables in your data. Therefore, they do not have quotations around them in the code.</em></p>
 <div id="your-turn-9" class="section level3">
 <h3><span class="header-section-number">4.3.1</span> Your Turn 9</h3>
 <p>Use pivot_wider() to reorganize table2 into four columns: country, year, cases, and population.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1">table2 <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb42-2" title="2"><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> type, <span class="dt">values_from =</span> count)</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a>table2 <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb42-2"><a href="#cb42-2"></a><span class="st">  </span><span class="kw">pivot_wider</span>(<span class="dt">names_from =</span> type, <span class="dt">values_from =</span> count)</span></code></pre></div>
 <hr />
 <hr />
 <hr />
@@ -908,51 +919,51 @@ Hadley Wickham, <cite title="Source Title">RStudio</cite>
 <div id="dates-and-times" class="section level2">
 <h2><span class="header-section-number">5.1</span> Dates and Times</h2>
 <p>Because we’ve just worked a little bit with mutate, and one of the things you may find yourself doing is trying to get dates and times in the right format, this seems like a good time to tackle it. We will make up a vector of date-like things and learn how to use the <code>lubridate</code> package to deal with them.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1">dates_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">dates01 =</span> <span class="kw">c</span>(<span class="st">&quot;1-1-2019&quot;</span>, <span class="st">&quot;1-2-2019&quot;</span>, <span class="st">&quot;1-3-2019&quot;</span>),</a>
-<a class="sourceLine" id="cb43-2" title="2">                       <span class="dt">dates02 =</span> <span class="kw">c</span>(<span class="st">&quot;1/1/19&quot;</span>, <span class="st">&quot;1/2/19&quot;</span>, <span class="st">&quot;1/3/19&quot;</span>),</a>
-<a class="sourceLine" id="cb43-3" title="3">                       <span class="dt">dates03 =</span> <span class="kw">c</span>(<span class="st">&quot;2019-01-01&quot;</span>, <span class="st">&quot;2019-01-02&quot;</span>, <span class="st">&quot;2019-01-03&quot;</span>),</a>
-<a class="sourceLine" id="cb43-4" title="4">                       <span class="dt">datetime =</span> <span class="kw">c</span>(<span class="st">&quot;2019-01-01 12:00&quot;</span>, <span class="st">&quot;2019-01-01 13:00&quot;</span>, </a>
-<a class="sourceLine" id="cb43-5" title="5">                                    <span class="st">&quot;2019-01-01 14:00&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a>dates_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">dates01 =</span> <span class="kw">c</span>(<span class="st">&quot;1-1-2019&quot;</span>, <span class="st">&quot;1-2-2019&quot;</span>, <span class="st">&quot;1-3-2019&quot;</span>),</span>
+<span id="cb43-2"><a href="#cb43-2"></a>                       <span class="dt">dates02 =</span> <span class="kw">c</span>(<span class="st">&quot;1/1/19&quot;</span>, <span class="st">&quot;1/2/19&quot;</span>, <span class="st">&quot;1/3/19&quot;</span>),</span>
+<span id="cb43-3"><a href="#cb43-3"></a>                       <span class="dt">dates03 =</span> <span class="kw">c</span>(<span class="st">&quot;2019-01-01&quot;</span>, <span class="st">&quot;2019-01-02&quot;</span>, <span class="st">&quot;2019-01-03&quot;</span>),</span>
+<span id="cb43-4"><a href="#cb43-4"></a>                       <span class="dt">datetime =</span> <span class="kw">c</span>(<span class="st">&quot;2019-01-01 12:00&quot;</span>, <span class="st">&quot;2019-01-01 13:00&quot;</span>, </span>
+<span id="cb43-5"><a href="#cb43-5"></a>                                    <span class="st">&quot;2019-01-01 14:00&quot;</span>))</span></code></pre></div>
 <p>How are these showing up in the data frame?</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="kw">glimpse</span>(dates_df)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="kw">glimpse</span>(dates_df)</span></code></pre></div>
 <p>If you try to make a time-series graph, it might work; but it will be very, very slow when you have more than 3 values. You also run the risk of dates being shuffled so they’re out of order. So we really want those dates to be <em>dates</em>.</p>
 <p>This seems like it should be easy in base R, using the <code>as.Date()</code> function, but that can give you the wrong output (without so much as a warning!) if your date isn’t formatted the way the function thinks it should be:</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb45-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">as.Date</span>(dates01),</a>
-<a class="sourceLine" id="cb45-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">as.Date</span>(dates02),</a>
-<a class="sourceLine" id="cb45-4" title="4">           <span class="dt">dates03_changed =</span> <span class="kw">as.Date</span>(dates03))</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>dates_df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb45-2"><a href="#cb45-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">as.Date</span>(dates01),</span>
+<span id="cb45-3"><a href="#cb45-3"></a>           <span class="dt">dates02_changed =</span> <span class="kw">as.Date</span>(dates02),</span>
+<span id="cb45-4"><a href="#cb45-4"></a>           <span class="dt">dates03_changed =</span> <span class="kw">as.Date</span>(dates03))</span></code></pre></div>
 <p>Enter the lubridate package. It lets you turn character strings and even numbers into dates - or date/times! - by specifying the order of what’s in your data as the function name.</p>
 <p>That’s hard to explain, so let’s just do it. The first column is currently in “m-d-y” (with 4 digits in the year) format. The second is “m/d/y” - similar format, but only two digits in the year. The same lubridate function will work for both of these: <code>mdy()</code>.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb46-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</a>
-<a class="sourceLine" id="cb46-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb46-4" title="4"><span class="st">    </span><span class="kw">glimpse</span>()  <span class="co"># to see the structure</span></a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a>dates_df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-2"><a href="#cb46-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</span>
+<span id="cb46-3"><a href="#cb46-3"></a>           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb46-4"><a href="#cb46-4"></a><span class="st">    </span><span class="kw">glimpse</span>()  <span class="co"># to see the structure</span></span></code></pre></div>
 <p>Notice the returned date is “yyyy-mm-dd”, which is actually a standard date format known as ISO 8601.</p>
 <p>For our 3rd column, it’s already in that order we need, but we need it to be a date. Any guesses as to what that function is?</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb47-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</a>
-<a class="sourceLine" id="cb47-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02),</a>
-<a class="sourceLine" id="cb47-4" title="4">           <span class="dt">dates03_changed =</span> <span class="op">---</span>(dates03)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb47-5" title="5"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>dates_df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</span>
+<span id="cb47-3"><a href="#cb47-3"></a>           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02),</span>
+<span id="cb47-4"><a href="#cb47-4"></a>           <span class="dt">dates03_changed =</span> <span class="op">---</span>(dates03)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb47-5"><a href="#cb47-5"></a><span class="st">    </span><span class="kw">glimpse</span>()</span></code></pre></div>
 <p>Times make things trickier. R wants date-time columns to be in a format called <code>POSIX</code>. There is a function in base R called <code>as.POSIXct()</code> that lets you transform different values into that format. It is a burden though to specify the format you’re feeding into the function. (If you don’t want to take my word for it, look up the help file: <code>?as.POSIXct</code>)</p>
 <p>The lubridate package makes it just as simple as the dates we did above. Again, the exact function you want to use depends on the order your date appears, but all you have to do is add <code>_hm</code> or <code>_hms</code> to the end of your <code>mdy</code>/<code>ymd</code> function, depending on whether your time has seconds or not.</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1">dates_df <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb48-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</a>
-<a class="sourceLine" id="cb48-3" title="3">           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02),</a>
-<a class="sourceLine" id="cb48-4" title="4">           <span class="dt">dates03_changed =</span> <span class="kw">ymd</span>(dates03),</a>
-<a class="sourceLine" id="cb48-5" title="5">           <span class="dt">datetime_changed =</span> <span class="kw">ymd_hm</span>(datetime)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb48-6" title="6"><span class="st">    </span><span class="kw">glimpse</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a>dates_df <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb48-2"><a href="#cb48-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">dates01_changed =</span> <span class="kw">mdy</span>(dates01),</span>
+<span id="cb48-3"><a href="#cb48-3"></a>           <span class="dt">dates02_changed =</span> <span class="kw">mdy</span>(dates02),</span>
+<span id="cb48-4"><a href="#cb48-4"></a>           <span class="dt">dates03_changed =</span> <span class="kw">ymd</span>(dates03),</span>
+<span id="cb48-5"><a href="#cb48-5"></a>           <span class="dt">datetime_changed =</span> <span class="kw">ymd_hm</span>(datetime)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb48-6"><a href="#cb48-6"></a><span class="st">    </span><span class="kw">glimpse</span>()</span></code></pre></div>
 <p>If you only work with times in their own column, the <code>hms</code> library may help you out. There are differences between operating systems and software versions in how Excel stores dates and times in its brain, so <strong>be VERY CAREFUL</strong> and check your transformed data to make sure you have the output you think you have!</p>
 <div id="your-turn---dates-and-times" class="section level3">
 <h3><span class="header-section-number">5.1.1</span> Your Turn - Dates and Times</h3>
 <p><code>mutate</code> can be used to add a complete vector of the same value. That is what we’ll do below. Fill in the skeleton code to create a column for a full yyyy-mm-dd style date, then make a <em>line</em> graph of temperature throughout the year at the water quality stations, and color them by station code.</p>
 <p>Which of these stations do you think is at the NERR in Alaska?</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1">wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb49-2" title="2"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="dv">2016</span>,</a>
-<a class="sourceLine" id="cb49-3" title="3">           <span class="dt">date_pasted =</span> <span class="kw">paste</span>(year, month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),</a>
-<a class="sourceLine" id="cb49-4" title="4">           <span class="dt">date =</span> <span class="op">----</span>(date_pasted)) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># hint: use a lubridate function!</span></a>
-<a class="sourceLine" id="cb49-5" title="5"><span class="st">    </span><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb49-6" title="6"><span class="st">    </span>geom_<span class="op">----</span>(<span class="dt">mapping =</span> <span class="op">----</span>(<span class="dt">x =</span> date, <span class="dt">y =</span> temp_f, <span class="dt">col =</span> <span class="op">----</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a>wq_trimmed <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb49-2"><a href="#cb49-2"></a><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">year =</span> <span class="dv">2016</span>,</span>
+<span id="cb49-3"><a href="#cb49-3"></a>           <span class="dt">date_pasted =</span> <span class="kw">paste</span>(year, month, day, <span class="dt">sep =</span> <span class="st">&quot;-&quot;</span>),</span>
+<span id="cb49-4"><a href="#cb49-4"></a>           <span class="dt">date =</span> <span class="op">----</span>(date_pasted)) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># hint: use a lubridate function!</span></span>
+<span id="cb49-5"><a href="#cb49-5"></a><span class="st">    </span><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb49-6"><a href="#cb49-6"></a><span class="st">    </span>geom_<span class="op">----</span>(<span class="dt">mapping =</span> <span class="op">----</span>(<span class="dt">x =</span> date, <span class="dt">y =</span> temp_f, <span class="dt">col =</span> <span class="op">----</span>))</span></code></pre></div>
 <hr />
 <hr />
 <hr />
@@ -1016,7 +1027,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
