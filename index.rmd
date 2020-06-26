@@ -38,8 +38,8 @@ Kim Cressman, Grand Bay NERR  |  <i class="fa fa-envelope"></i> Kimberly.Cressma
 (2020-06-19 Update) *Instructions for preparation have been moved to the "About" tab.*
 
 <div class="jumbotron">
-  <center><h2><b> Updates! (2020-06-19)</h2></b> <br>
-  <p>Week One session contents have been posted and updated both here on the website and in the Github repository for the workshop materials! <br> The Github repository is quick linked below:</p></center>
+  <center><h2><b> Updates! (2020-06-26)</h2></b> <br>
+  <p>Week Two session contents have been posted and updated both here on the website and in the Github repository for the workshop materials! <br> The Github repository is quick linked below:</p></center>
   <p><center><a class="btn btn-warning btn" href="https://github.com/skdunnigan/2020-06_IntegrateR" role="button">Full Workshop Materials Repository</a>
   </p></center>
 </div>

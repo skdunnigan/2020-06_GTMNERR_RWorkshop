@@ -69,7 +69,9 @@ knitr::include_graphics("images/kim-cressman.jpg")
 
 ***
 
-# Images used in workshop materials
+# Used in workshop materials:
 
-In several slides we have used some fabulous illustrations by Allison Horst ([<i class="fa fa-github"></i> allisonhorst](https://www.github.com/allisonhorst); [<i class="fa fa-twitter"></i>allison_horst](https://twitter.com/allison_horst)). Please check her out! 
-  
++  Fabulous illustrations by Allison Horst ([<i class="fa fa-github"></i> allisonhorst](https://www.github.com/allisonhorst); [<i class="fa fa-twitter"></i>allison_horst](https://twitter.com/allison_horst)). Please check her out! 
+<br>
+
++  Here is a link to the [Google Doc](https://docs.google.com/document/d/1GDjw5CbKF0MVekEpO6H4tU5uDV7ejAtyus600omcnwI/edit) that was used during the sessions in Week 2.
