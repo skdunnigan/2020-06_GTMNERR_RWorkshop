@@ -16,9 +16,9 @@ navbar:
     - text: Session 04 - Basic Statistical Outputs
       href: 04_basic_stats_full.html
     - text: Session 05 - Functions
-      href:
+      href: 05_Functions_full.html
     - text: Session 06 - Loops
-      href:
+      href: 06_Loops_full.html
   - text: RStudio Cloud
     href: https://rstudio.cloud/spaces/69467/join?access_code=qxliGkr1Dgd5tu8JQ8nGoRIWI9%2BOQkWRn8yStGp1
   right:
